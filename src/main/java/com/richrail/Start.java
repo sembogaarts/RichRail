@@ -1,11 +1,8 @@
 package com.richrail;
 
 
-import com.google.gson.Gson;
 import com.richrail.models.Train;
 import com.richrail.models.Wagon;
-import javafx.application.Application;
-import javafx.stage.Stage;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -37,13 +34,13 @@ public class Start extends javax.swing.JFrame implements ActionListener {
     private JTextField tfCurrentTrain;
     private JButton btnDeleteTrain;
     private JButton btnChooseTrain;
-    private JComboBox cbAllTrains;
+    private JComboBox<String> cbAllTrains;
     private JButton btnNewTrain;
     private JTextField tfNewTrain;
     private JPanel jPanel2;
     private JPanel drawPanel;
 
-    private HashMap numberOfWagons;
+    private HashMap<java.io.Serializable, Integer> numberOfWagons;
     private int currentNumberOfWagons;
     private int currentTrain = -1;
     private int OFFSET = 100;
@@ -147,10 +144,10 @@ public class Start extends javax.swing.JFrame implements ActionListener {
                     btnNewTrain.addActionListener(this);
                 }
                 {
-                    ComboBoxModel cbAllTrainsModel =
-                            new DefaultComboBoxModel(
+                    ComboBoxModel<String> cbAllTrainsModel =
+                            new DefaultComboBoxModel<>(
                                     new String[]{});
-                    cbAllTrains = new JComboBox();
+                    cbAllTrains = new JComboBox<String>();
 				/*	GridLayout cbAllTrainsLayout = new GridLayout(1, 1);
 					cbAllTrainsLayout.setColumns(1);
 					cbAllTrainsLayout.setHgap(5);
@@ -226,7 +223,7 @@ public class Start extends javax.swing.JFrame implements ActionListener {
             }
             pack();
             setSize(800, 600);
-            numberOfWagons = new HashMap();
+            numberOfWagons = new HashMap<>();
 
             trains = new ArrayList<>();
 
@@ -242,9 +239,11 @@ public class Start extends javax.swing.JFrame implements ActionListener {
             trains.add(train1);
             trains.add(train);
             trains.add(train1);
-            drawPanel.setVisible(true);
             drawAllTrains();
             drawPanel.updateUI();
+            drawPanel.setVisible(true);
+            drawPanel.revalidate();
+            drawPanel.repaint();
         } catch (Exception e) {
 
             e.printStackTrace();
@@ -270,7 +269,7 @@ public class Start extends javax.swing.JFrame implements ActionListener {
                 }
                 currentTrain = ti;
                 try {
-                    currentNumberOfWagons = (Integer) numberOfWagons.get(currentTrain);
+                    currentNumberOfWagons = numberOfWagons.get(currentTrain);
                 } catch (Exception e) {
                     currentNumberOfWagons = 0;
                 }
@@ -312,7 +311,7 @@ public class Start extends javax.swing.JFrame implements ActionListener {
         try {
             t = train.trim();
             for (int i = 0; i < cbAllTrains.getItemCount(); i++) {
-                String cbTrain = (String) cbAllTrains.getItemAt(i);
+                String cbTrain = cbAllTrains.getItemAt(i);
                 if (cbTrain.equalsIgnoreCase(t)) {
                     t = "";
                     break;
@@ -342,7 +341,7 @@ public class Start extends javax.swing.JFrame implements ActionListener {
             for (int j = 0; j < train.getWagons().size(); j++) {
                 int numberOfWagons = j;
                 Wagon wagon = train.getWagons().get(j);
-                wagon.draw(drawPanel, numberOfWagons * TRAINLENGTH, j* OFFSET);
+                wagon.draw(drawPanel, numberOfWagons * TRAINLENGTH, j * OFFSET);
             }
         }
     }
