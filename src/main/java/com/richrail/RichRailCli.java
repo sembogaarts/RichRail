@@ -19,7 +19,7 @@ public class RichRailCli implements RichRailListener {
 
     @Override
     public void enterNewcommand(RichRailParser.NewcommandContext ctx) {
-
+        System.out.println(ctx.getText());
     }
 
     @Override
