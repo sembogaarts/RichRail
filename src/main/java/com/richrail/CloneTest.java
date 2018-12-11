@@ -10,8 +10,11 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
+
 
 public class CloneTest extends Application {
+    ArrayList<Train> trains;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -36,7 +39,35 @@ public class CloneTest extends Application {
 
         primaryStage.show();
 
+        trains = new ArrayList<>();
 
+        Train train = new Train("test");
+        Train train1 = new Train("test");
+        Wagon wagon1 = new Wagon("adas");
+        train1.addWagon(wagon1);
+        train1.addWagon(wagon1);
+        trains.add(train);
+        trains.add(train);
+        trains.add(train);
+        trains.add(train1);
+        trains.add(train);
+        trains.add(train1);
+        drawAllTrains();
+
+    }
+
+    private void drawAllTrains() {
+        for (int i = 0; i < trains.size(); i++) {
+            Train train = trains.get(i);
+            System.out.println(train.title);
+            train.draw(x,y);
+
+            for (int j = 0; j < train.getWagons().size(); j++) {
+                int numberOfWagons = j;
+                Wagon wagon = train.getWagons().get(j);
+                wagon.draw(drawPanel, numberOfWagons * TRAINLENGTH, j * OFFSET);
+            }
+        }
     }
 
 
