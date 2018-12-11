@@ -1,5 +1,6 @@
 package com.richrail;
 
+import com.richrail.models.Locomotive;
 import com.richrail.models.Train;
 import com.richrail.models.Wagon;
 import javafx.application.Application;
@@ -26,10 +27,6 @@ public class CloneTest extends Application {
 
         main = new Group();
 
-        // Create a new Group an Scene
-//        Group g1 = this.locomotive(0, 0);
-//        Group g2 = this.wagon(150, 0);
-
         Scene s = new Scene(main, 1000, 1000, Color.WHITE);
 
         primaryStage.setTitle("RichRail");
@@ -40,41 +37,42 @@ public class CloneTest extends Application {
 
         trains = new ArrayList<>();
 
-        Train train = new Train("test");
-        Train train1 = new Train("test");
+        Train train1 = new Train("test1");
+        Train train2 = new Train("test2");
+
+        Locomotive locomotive = new Locomotive();
+
+        train1.setLocomotive(locomotive);
+        train2.setLocomotive(locomotive);
+
         Wagon wagon1 = new Wagon("adas");
+        Wagon wagon2 = new Wagon("adas");
+        Wagon wagon3 = new Wagon("adas");
+
         train1.addWagon(wagon1);
+        train1.addWagon(wagon3);
         trains.add(train1);
-        train1.addWagon(wagon1);
-        trains.add(train);
-        new Timer().scheduleAtFixedRate(new TimerTask(){
-            @Override
-            public void run(){
-                Platform.runLater(new Runnable(){
-                    @Override
-                    public void run() {
-                        trains.add(train);
-                        trains.add(train1);
 
-                        main.getChildren().clear();
-                        drawAllTrains();
-                    }
-                });
+        train2.addWagon(wagon2);
+        trains.add(train2);
 
-            }
-        },0,1000);
+        drawAllTrains();
 
     }
 
     private void drawAllTrains() {
+
         for (int i = 0; i < trains.size(); i++) {
+
             Train train = trains.get(i);
+
             System.out.println(train.title);
-            main.getChildren().add(train.draw(0, 100 * i));
-            for (int j = 0; j < train.getWagons().size(); j++) {
-                Wagon wagon = train.getWagons().get(j);
-                main.getChildren().add(wagon.draw(140 * j, 100 * i));
-            }
+
+            System.out.println(train.getWagons());
+
+            main.getChildren().add(train.draw(0, 120 * i));
+
         }
+
     }
 }

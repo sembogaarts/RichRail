@@ -30,7 +30,7 @@ public class Wagon implements RollingComponent {
         body.setHeight(bodyHeight);
         body.setX(x);
         body.setY(y - (bodyHeight - pipeHeight));
-        body.setFill(javafx.scene.paint.Color.GREY);
+        body.setFill(javafx.scene.paint.Color.RED);
 
         // Create the wheel
         Circle frontWheel = new Circle();
