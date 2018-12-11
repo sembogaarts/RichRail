@@ -225,6 +225,14 @@ public class Start extends javax.swing.JFrame implements ActionListener {
             setSize(800, 600);
             numberOfWagons = new HashMap<>();
 
+            trains = new ArrayList<>();
+
+            Train train = new Train("test");
+            Train train1 = new Train("test");
+            Wagon wagon1 = new Wagon("adas");
+            train1.addWagon(wagon1);
+            train1.addWagon(wagon1);
+            drawAllTrains();
 
             trains.add(train);
             trains.add(train);
@@ -328,12 +336,12 @@ public class Start extends javax.swing.JFrame implements ActionListener {
         for (int i = 0; i < trains.size(); i++) {
             Train train = trains.get(i);
             System.out.println(train.title);
-            train.draw(drawPanel, (currentTrain + i) * OFFSET);
+//            train.draw(drawPanel, (currentTrain + i) * OFFSET);
 
             for (int j = 0; j < train.getWagons().size(); j++) {
                 int numberOfWagons = j;
                 Wagon wagon = train.getWagons().get(j);
-                wagon.draw(drawPanel, numberOfWagons * TRAINLENGTH, j * OFFSET);
+//                wagon.draw(drawPanel, numberOfWagons * TRAINLENGTH, j * OFFSET);
             }
         }
     }

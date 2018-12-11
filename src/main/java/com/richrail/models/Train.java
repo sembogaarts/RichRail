@@ -1,7 +1,11 @@
 package com.richrail.models;
 
+import javafx.scene.Group;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
+
 import javax.swing.*;
-import java.awt.*;
 import java.util.ArrayList;
 
 public class Train {
@@ -23,17 +27,56 @@ public class Train {
         return wagons;
     }
 
-    public void draw(JPanel drawPanel, int offset) {
-        Graphics g = drawPanel.getGraphics();
-        g.setColor(Color.LIGHT_GRAY);
-        g.fillRect(30, 80 + offset, 80, 40);
-        g.fillRect(80, 60 + offset, 30, 30);
-        g.drawRoundRect(85, 40 + offset, 20, 20, 20, 20);
-        g.drawRoundRect(85, offset, 40, 40, 40, 40);
-        g.setColor(Color.BLACK);
-        g.fillRoundRect(35, 120 + offset, 20, 20, 20, 20);
-        g.fillRoundRect(80, 120 + offset, 20, 20, 20, 20);
-        g.drawString(title, 40, 105 + offset);
+    public Group draw(int x, int y) {
+        Group g = new Group();
+
+        // Properties
+        int bodyHeight = 60;
+        int bodyWidth = 120;
+        int pipeHeight = 90;
+        int pipeWidth = 50;
+        int wheelRadius = 15;
+        int wheelOffset = 10;
+
+        // Create the body
+        javafx.scene.shape.Rectangle body = new javafx.scene.shape.Rectangle();
+        body.setWidth(bodyWidth);
+        body.setHeight(bodyHeight);
+        body.setX(x);
+        body.setY(y - (bodyHeight - pipeHeight));
+        body.setFill(javafx.scene.paint.Color.GREY);
+
+        // Create the pipe
+        javafx.scene.shape.Rectangle pipe = new Rectangle();
+        pipe.setWidth(pipeWidth);
+        pipe.setHeight(pipeHeight);
+
+        pipe.setX(x + (bodyWidth - pipeWidth));
+        pipe.setY(y);
+
+        pipe.setFill(javafx.scene.paint.Color.GREY);
+
+        // Create the wheel
+        Circle frontWheel = new Circle();
+        frontWheel.setRadius(wheelRadius);
+        frontWheel.setCenterX(x + (wheelRadius + wheelOffset));
+        frontWheel.setCenterY(y + pipeHeight);
+        frontWheel.setFill(javafx.scene.paint.Color.BLACK);
+
+        // Create the wheel
+        Circle backWheel = new Circle();
+        backWheel.setRadius(wheelRadius);
+        backWheel.setCenterX(x + (bodyWidth - wheelRadius - wheelOffset));
+        backWheel.setCenterY(y + pipeHeight);
+        backWheel.setFill(Color.BLACK);
+
+        // Add all to group
+        g.getChildren().add(body);
+        g.getChildren().add(pipe);
+        g.getChildren().add(frontWheel);
+        g.getChildren().add(backWheel);
+
+        return g;
     }
 
 }
