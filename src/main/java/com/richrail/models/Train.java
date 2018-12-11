@@ -2,12 +2,20 @@ package com.richrail.models;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class Train {
+
     public String title;
+    private Locomotive locomotive;
+    private ArrayList<Wagon> wagons;
 
     public Train(String title) {
         this.title = title;
+    }
+
+    public void addWagon(Wagon wagon) {
+        this.wagons.add(wagon);
     }
 
     public void draw(JPanel drawPanel, int offset) {
@@ -22,4 +30,5 @@ public class Train {
         g.fillRoundRect(80, 120 + offset, 20, 20, 20, 20);
         g.drawString(this.title, 40, 105 + offset);
     }
+
 }
