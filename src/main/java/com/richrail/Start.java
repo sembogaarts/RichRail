@@ -235,100 +235,101 @@ public class Start extends javax.swing.JFrame implements ActionListener {
             Wagon wagon1 = new Wagon("adas");
             train1.addWagon(wagon1);
             train1.addWagon(wagon1);
-//
-            trains.add(train);
-            trains.add(train);
-            trains.add(train);
-            trains.add(train1);
-            trains.add(train);
-            trains.add(train1);
 
+            trains.add(train);
+            trains.add(train);
+            trains.add(train);
+            trains.add(train1);
+            trains.add(train);
+            trains.add(train1);
+            drawPanel.setVisible(true);
             drawAllTrains();
-
+            drawPanel.updateUI();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-//
-//    public void actionPerformed(ActionEvent event) {
-//        if (event.getSource() == btnNewTrain) {
-//            String train = tfNewTrain.getText();
-//            if (train != null && train.trim().length() > 0) {
-//                train = addTrain(train);
-//                currentTrain = cbAllTrains.getSelectedIndex();
-//                drawTrain(train);
-//            }
-//        } else if (event.getSource() == btnChooseTrain) {
-//            if (cbAllTrains.getItemCount() > 0) {
-//                String selection = (String) cbAllTrains.getSelectedItem();
-//                tfCurrentTrain.setText("selected: " + selection);
-//                int ti = cbAllTrains.getSelectedIndex();
-//                if (ti != currentTrain) {
-//                    numberOfWagons.put(currentTrain, currentNumberOfWagons);
-//                }
-//                currentTrain = ti;
-//                try {
-//                    currentNumberOfWagons = (Integer) numberOfWagons.get(currentTrain);
-//                } catch (Exception e) {
-//                    currentNumberOfWagons = 0;
-//                }
-//            }
-//        } else if (event.getSource() == btnDeleteTrain) {
-//            if (cbAllTrains.getItemCount() > 0) {
-//                String t = (String) cbAllTrains.getSelectedItem();
-//                cbAllTrains.removeItemAt(cbAllTrains.getSelectedIndex());
-//                numberOfWagons.remove(t);
-//                repaint();
-//                if ((String) cbAllTrains.getSelectedItem() != null) {
-//                    currentTrain = cbAllTrains.getSelectedIndex();
-//                    tfCurrentTrain.setText("selected: " + (String) cbAllTrains.getSelectedItem());
-//                } else {
-//                    currentTrain = 0;
-//                    tfCurrentTrain.setText("selected: ");
-//                }
-//            }
-//        } else if (event.getSource() == btnAddWagon1) {
-//            currentNumberOfWagons++;
-//            drawWagon("Wagon1");
-//        } else if (event.getSource() == btnAddWagon2) {
-//            currentNumberOfWagons++;
-//            drawWagon("Wagon2");
-//        } else if (event.getSource() == jButton1) {
-//            currentNumberOfWagons++;
-//            drawWagon("Wagon3");
-//        } else if (event.getSource() == btnDeleteWagon1) {
-//            repaint(30 + TRAINLENGTH, 80 + currentTrain * OFFSET, 1, 1);
-//        } else if (event.getSource() == btnDeleteWagon2) {
-//            repaint(30 + TRAINLENGTH, 80 + currentTrain * OFFSET, 1, 1);
-//        } else if (event.getSource() == btnDeleteWagon3) {
-//            repaint(30 + TRAINLENGTH, 80 + currentTrain * OFFSET, 1, 1);
-//        }
-//    }
-//
-//    public String addTrain(String train) {
-//        String t = "";
-//        try {
-//            t = train.trim();
-//            for (int i = 0; i < cbAllTrains.getItemCount(); i++) {
-//                String cbTrain = (String) cbAllTrains.getItemAt(i);
-//                if (cbTrain.equalsIgnoreCase(t)) {
-//                    t = "";
-//                    break;
-//                }
-//            }
-//            if (t != "") {
-//                if (currentTrain >= 0) {
-//                    numberOfWagons.put(currentTrain, currentNumberOfWagons);
-//                }
-//                cbAllTrains.addItem(t);
-//                cbAllTrains.setSelectedItem(t);
-//                numberOfWagons.put(t, 0);
-//            }
-//        } catch (Exception e) {
-//        }
-//        return t;
-//
-//    }
+
+    public void actionPerformed(ActionEvent event) {
+        if (event.getSource() == btnNewTrain) {
+            String train = tfNewTrain.getText();
+            if (train != null && train.trim().length() > 0) {
+                train = addTrain(train);
+                currentTrain = cbAllTrains.getSelectedIndex();
+//                drawWagon(train);
+                drawAllTrains();
+            }
+        } else if (event.getSource() == btnChooseTrain) {
+            if (cbAllTrains.getItemCount() > 0) {
+                String selection = (String) cbAllTrains.getSelectedItem();
+                tfCurrentTrain.setText("selected: " + selection);
+                int ti = cbAllTrains.getSelectedIndex();
+                if (ti != currentTrain) {
+                    numberOfWagons.put(currentTrain, currentNumberOfWagons);
+                }
+                currentTrain = ti;
+                try {
+                    currentNumberOfWagons = (Integer) numberOfWagons.get(currentTrain);
+                } catch (Exception e) {
+                    currentNumberOfWagons = 0;
+                }
+            }
+        } else if (event.getSource() == btnDeleteTrain) {
+            if (cbAllTrains.getItemCount() > 0) {
+                String t = (String) cbAllTrains.getSelectedItem();
+                cbAllTrains.removeItemAt(cbAllTrains.getSelectedIndex());
+                numberOfWagons.remove(t);
+                repaint();
+                if ((String) cbAllTrains.getSelectedItem() != null) {
+                    currentTrain = cbAllTrains.getSelectedIndex();
+                    tfCurrentTrain.setText("selected: " + (String) cbAllTrains.getSelectedItem());
+                } else {
+                    currentTrain = 0;
+                    tfCurrentTrain.setText("selected: ");
+                }
+            }
+        } else if (event.getSource() == btnAddWagon1) {
+            currentNumberOfWagons++;
+            drawWagon("Wagon1");
+        } else if (event.getSource() == btnAddWagon2) {
+            currentNumberOfWagons++;
+            drawWagon("Wagon2");
+        } else if (event.getSource() == jButton1) {
+            currentNumberOfWagons++;
+            drawWagon("Wagon3");
+        } else if (event.getSource() == btnDeleteWagon1) {
+            repaint(30 + TRAINLENGTH, 80 + currentTrain * OFFSET, 1, 1);
+        } else if (event.getSource() == btnDeleteWagon2) {
+            repaint(30 + TRAINLENGTH, 80 + currentTrain * OFFSET, 1, 1);
+        } else if (event.getSource() == btnDeleteWagon3) {
+            repaint(30 + TRAINLENGTH, 80 + currentTrain * OFFSET, 1, 1);
+        }
+    }
+
+    public String addTrain(String train) {
+        String t = "";
+        try {
+            t = train.trim();
+            for (int i = 0; i < cbAllTrains.getItemCount(); i++) {
+                String cbTrain = (String) cbAllTrains.getItemAt(i);
+                if (cbTrain.equalsIgnoreCase(t)) {
+                    t = "";
+                    break;
+                }
+            }
+            if (t != "") {
+                if (currentTrain >= 0) {
+                    numberOfWagons.put(currentTrain, currentNumberOfWagons);
+                }
+                cbAllTrains.addItem(t);
+                cbAllTrains.setSelectedItem(t);
+                numberOfWagons.put(t, 0);
+            }
+        } catch (Exception e) {
+        }
+        return t;
+
+    }
 
     public void drawAllTrains() {
         drawWagon("sdaas");
@@ -337,18 +338,14 @@ public class Start extends javax.swing.JFrame implements ActionListener {
             System.out.println(train.title);
             train.draw(drawPanel, (currentTrain + i) * OFFSET);
 
-//            for (int j = 0; j < train.getWagons().size(); j++) {
-//                int numberOfWagons = j;
-//                Wagon wagon = train.getWagons().get(j);
-//                wagon.draw(drawPanel, numberOfWagons * TRAINLENGTH, currentTraintemp * OFFSET);
-//            }
+            for (int j = 0; j < train.getWagons().size(); j++) {
+                int numberOfWagons = j;
+                Wagon wagon = train.getWagons().get(j);
+                wagon.draw(drawPanel, numberOfWagons * TRAINLENGTH, j* OFFSET);
+            }
         }
     }
 
-    @Override
-    public void actionPerformed(ActionEvent actionEvent) {
-
-    }
 
     //
 //    public void drawTrain(String train) {
@@ -359,7 +356,7 @@ public class Start extends javax.swing.JFrame implements ActionListener {
 //
 //    }
 //
-    public void drawWagon(String wagon) {
+    private void drawWagon(String wagon) {
         Graphics g = drawPanel.getGraphics();
         g.setColor(Color.LIGHT_GRAY);
         g.fillRect(30 + currentNumberOfWagons * TRAINLENGTH, 80 + currentTrain * OFFSET, 80, 40);
