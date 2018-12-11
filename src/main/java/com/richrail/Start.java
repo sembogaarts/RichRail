@@ -84,6 +84,8 @@ public class Start extends javax.swing.JFrame implements ActionListener {
         train1.addWagon(wagon1);
 //
         trains.add(train);
+        trains.add(train);
+        trains.add(train);
         trains.add(train1);
 //
 //        Gson gson = new Gson();
@@ -235,6 +237,10 @@ public class Start extends javax.swing.JFrame implements ActionListener {
             train1.addWagon(wagon1);
 //
             trains.add(train);
+            trains.add(train);
+            trains.add(train);
+            trains.add(train1);
+            trains.add(train);
             trains.add(train1);
 
             drawAllTrains();
@@ -325,18 +331,17 @@ public class Start extends javax.swing.JFrame implements ActionListener {
 //    }
 
     public void drawAllTrains() {
-//        drawPanel.getGraphics().clearRect(0, 0, drawPanel.getHeight(), drawPanel.getWidth());
-
+        drawWagon("sdaas");
         for (int i = 0; i < trains.size(); i++) {
             Train train = trains.get(i);
-            int currentTraintemp = i;
-            train.draw(drawPanel, currentTraintemp * OFFSET);
+            System.out.println(train.title);
+            train.draw(drawPanel, (currentTrain + i) * OFFSET);
 
-            for (int j = 0; j < train.getWagons().size(); j++) {
-                int numberOfWagons = j;
-                Wagon wagon = train.getWagons().get(j);
-                wagon.draw(drawPanel, numberOfWagons * TRAINLENGTH, currentTraintemp * OFFSET);
-            }
+//            for (int j = 0; j < train.getWagons().size(); j++) {
+//                int numberOfWagons = j;
+//                Wagon wagon = train.getWagons().get(j);
+//                wagon.draw(drawPanel, numberOfWagons * TRAINLENGTH, currentTraintemp * OFFSET);
+//            }
         }
     }
 
@@ -344,7 +349,8 @@ public class Start extends javax.swing.JFrame implements ActionListener {
     public void actionPerformed(ActionEvent actionEvent) {
 
     }
-//
+
+    //
 //    public void drawTrain(String train) {
 //        if (train != "") {
 //            Train train1 = new Train(train);
@@ -353,13 +359,13 @@ public class Start extends javax.swing.JFrame implements ActionListener {
 //
 //    }
 //
-//    public void drawWagon(String wagon) {
-//        Graphics g = drawPanel.getGraphics();
-//        g.setColor(Color.LIGHT_GRAY);
-//        g.fillRect(30 + currentNumberOfWagons * TRAINLENGTH, 80 + currentTrain * OFFSET, 80, 40);
-//        g.setColor(Color.BLACK);
-//        g.fillRoundRect(35 + currentNumberOfWagons * TRAINLENGTH, 120 + currentTrain * OFFSET, 20, 20, 20, 20);
-//        g.fillRoundRect(80 + currentNumberOfWagons * TRAINLENGTH, 120 + currentTrain * OFFSET, 20, 20, 20, 20);
-//        g.drawString(wagon, 40 + currentNumberOfWagons * TRAINLENGTH, 105 + currentTrain * OFFSET);
-//    }
+    public void drawWagon(String wagon) {
+        Graphics g = drawPanel.getGraphics();
+        g.setColor(Color.LIGHT_GRAY);
+        g.fillRect(30 + currentNumberOfWagons * TRAINLENGTH, 80 + currentTrain * OFFSET, 80, 40);
+        g.setColor(Color.BLACK);
+        g.fillRoundRect(35 + currentNumberOfWagons * TRAINLENGTH, 120 + currentTrain * OFFSET, 20, 20, 20, 20);
+        g.fillRoundRect(80 + currentNumberOfWagons * TRAINLENGTH, 120 + currentTrain * OFFSET, 20, 20, 20, 20);
+        g.drawString(wagon, 40 + currentNumberOfWagons * TRAINLENGTH, 105 + currentTrain * OFFSET);
+    }
 }

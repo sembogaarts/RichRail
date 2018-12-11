@@ -33,7 +33,7 @@ public class Train {
         g.setColor(Color.BLACK);
         g.fillRoundRect(35, 120 + offset, 20, 20, 20, 20);
         g.fillRoundRect(80, 120 + offset, 20, 20, 20, 20);
-        g.drawString(this.title, 40, 105 + offset);
+        g.drawString(title, 40, 105 + offset);
     }
 
 }
