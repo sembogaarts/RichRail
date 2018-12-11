@@ -3,14 +3,18 @@ package com.richrail;
 import com.richrail.models.Train;
 import com.richrail.models.Wagon;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+import sun.rmi.runtime.Log;
 
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 public class CloneTest extends Application {
@@ -26,12 +30,9 @@ public class CloneTest extends Application {
 //        Group g1 = this.locomotive(0, 0);
 //        Group g2 = this.wagon(150, 0);
 
-        Scene s = new Scene(main, 300, 300, Color.WHITE);
-//        main.getChildren().clear();
+        Scene s = new Scene(main, 1000, 1000, Color.WHITE);
 
         primaryStage.setTitle("RichRail");
-
-
         primaryStage.setScene(s);
 
 
@@ -43,18 +44,25 @@ public class CloneTest extends Application {
         Train train1 = new Train("test");
         Wagon wagon1 = new Wagon("adas");
         train1.addWagon(wagon1);
-        train1.addWagon(wagon1);
-        train1.addWagon(wagon1);
-        train1.addWagon(wagon1);
         trains.add(train1);
         train1.addWagon(wagon1);
-        train1.addWagon(wagon1);
         trains.add(train);
-        trains.add(train);
-        trains.add(train);
-        trains.add(train);
-        trains.add(train1);
-        drawAllTrains();
+        new Timer().scheduleAtFixedRate(new TimerTask(){
+            @Override
+            public void run(){
+                Platform.runLater(new Runnable(){
+                    @Override
+                    public void run() {
+                        trains.add(train);
+                        trains.add(train1);
+
+                        main.getChildren().clear();
+                        drawAllTrains();
+                    }
+                });
+
+            }
+        },0,1000);
 
     }
 
