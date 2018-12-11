@@ -9,8 +9,6 @@ import javafx.scene.shape.Rectangle;
 
 public class Locomotive implements RollingComponent {
 
-
-
     public Group draw(int x, int y) {
 
         Group g = new Group();
