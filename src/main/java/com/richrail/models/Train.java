@@ -1,11 +1,6 @@
 package com.richrail.models;
 
 import javafx.scene.Group;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.Rectangle;
-
-import javax.swing.*;
 import java.util.ArrayList;
 
 public class Train {
@@ -54,9 +49,7 @@ public class Train {
             g.getChildren().add(wagonGroup);
         }
 
-
         return g;
-
 
     }
 
