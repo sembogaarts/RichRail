@@ -1,6 +1,8 @@
 package com.richrail.models;
 
 import javafx.scene.Group;
+import javafx.scene.text.Text;
+
 import java.util.ArrayList;
 
 public class Train {
@@ -36,6 +38,13 @@ public class Train {
 
         // Draw the locomotive
         Group locomotiveGroup = this.locomotive.draw(x, y);
+
+        // Add the name
+        Text name = new Text();
+        name.setText(this.title);
+        name.setX(10);
+        name.setY(y);
+        locomotiveGroup.getChildren().add(name);
 
         // Add the locomotive
         g.getChildren().add(locomotiveGroup);
