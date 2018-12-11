@@ -2,7 +2,7 @@ package com.richrail;
 
 
 import com.google.gson.Gson;
-import com.richrail.model.Train;
+import com.richrail.models.Train;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import org.antlr.v4.runtime.CharStream;
