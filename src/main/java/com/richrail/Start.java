@@ -246,6 +246,7 @@ public class Start extends javax.swing.JFrame implements ActionListener {
             drawAllTrains();
             drawPanel.updateUI();
         } catch (Exception e) {
+
             e.printStackTrace();
         }
     }
