@@ -16,37 +16,31 @@ public class CloneTest extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-
+        Group main = new Group();
 
         // Create a new Group an Scene
-        Group g1 = this.locomotive();
-        Group g2 = this.wagon();
+        Group g1 = this.locomotive(0, 0);
+        Group g2 = this.wagon(150, 0);
 
 
-
-        Scene s = new Scene(g1, 300, 300, Color.WHITE);
-
-
+        main.getChildren().add(g1);
+        main.getChildren().add(g2);
+        Scene s = new Scene(main, 300, 300, Color.WHITE);
+//        main.getChildren().clear();
 
         primaryStage.setTitle("RichRail");
-
-
-
 
 
         primaryStage.setScene(s);
 
 
-
-
         primaryStage.show();
-
 
 
     }
 
 
-    public Group locomotive() {
+    public Group locomotive(int x, int y) {
 
         Group g = new Group();
 
@@ -54,30 +48,30 @@ public class CloneTest extends Application {
         Rectangle body = new Rectangle();
         body.setWidth(120);
         body.setHeight(60);
-        body.setX(0);
-        body.setY(40);
+        body.setX(x);
+        body.setY(y);
         body.setFill(Color.GREY);
 
         // Create the pipe
         Rectangle pipe = new Rectangle();
         pipe.setWidth(50);
         pipe.setHeight(90);
-        pipe.setX(70);
-        pipe.setY(0);
+        pipe.setX(x + 70);
+        pipe.setY(y - 40);
         pipe.setFill(Color.GREY);
 
         // Create the wheel
         Circle frontWheel = new Circle();
         frontWheel.setRadius(15);
-        frontWheel.setCenterX(25);
-        frontWheel.setCenterY(115);
+        frontWheel.setCenterX(x + 25);
+        frontWheel.setCenterY(y + 75);
         frontWheel.setFill(Color.BLACK);
 
         // Create the wheel
         Circle backWheel = new Circle();
         backWheel.setRadius(15);
-        backWheel.setCenterX(85);
-        backWheel.setCenterY(115);
+        backWheel.setCenterX(x + 85);
+        backWheel.setCenterY(y + 75);
         backWheel.setFill(Color.BLACK);
 
         // Add all to group
@@ -90,7 +84,7 @@ public class CloneTest extends Application {
 
     }
 
-    public Group wagon() {
+    public Group wagon(int x, int y) {
 
 
         Group g = new Group();
@@ -99,22 +93,22 @@ public class CloneTest extends Application {
         Rectangle body = new Rectangle();
         body.setWidth(120);
         body.setHeight(60);
-        body.setX(0);
-        body.setY(40);
+        body.setX(x);
+        body.setY(y);
         body.setFill(Color.GREY);
 
         // Create the wheel
         Circle frontWheel = new Circle();
         frontWheel.setRadius(15);
-        frontWheel.setCenterX(25);
-        frontWheel.setCenterY(115);
+        frontWheel.setCenterX(x + 25);
+        frontWheel.setCenterY(y + 75);
         frontWheel.setFill(Color.BLACK);
 
         // Create the wheel
         Circle backWheel = new Circle();
         backWheel.setRadius(15);
-        backWheel.setCenterX(85);
-        backWheel.setCenterY(115);
+        backWheel.setCenterX(x + 85);
+        backWheel.setCenterY(y + 75);
         backWheel.setFill(Color.BLACK);
 
         // Add all to group
