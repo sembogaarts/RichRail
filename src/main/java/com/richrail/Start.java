@@ -47,10 +47,11 @@ public class Start extends javax.swing.JFrame implements ActionListener {
     private int currentTrain = -1;
     private int OFFSET = 100;
     private int TRAINLENGTH = 100;
+    private ArrayList trains;
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            PoorRail inst = new PoorRail();
+            Start inst = new Start();
             inst.setLocationRelativeTo(null);
             inst.setVisible(true);
         });
@@ -77,8 +78,6 @@ public class Start extends javax.swing.JFrame implements ActionListener {
 
 //        Train train = new Train();
 //        Train train1 = new Train();
-//
-//        ArrayList<Train> main = new ArrayList<>();
 //
 //        main.add(train);
 //        main.add(train1);
@@ -305,6 +304,13 @@ public class Start extends javax.swing.JFrame implements ActionListener {
         }
         return t;
 
+    }
+
+    public void drawAllTrains() {
+        drawPanel.getGraphics().clearRect(0, 0, drawPanel.getHeight(), drawPanel.getWidth());
+//        for (Train train : trains) {
+//
+//        }
     }
 
     public void drawTrain(String train) {
