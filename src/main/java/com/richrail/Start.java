@@ -35,7 +35,6 @@ public class Start extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-
         main = new Group();
         GridPane root = new GridPane();
         root.setHgap(10);
@@ -65,10 +64,14 @@ public class Start extends Application {
 
             // Create ParseTreeWalker and Custom Listener
             ParseTreeWalker walker = new ParseTreeWalker();
-            RichRailListener listener = new RichRailCli();
+            RichRailCli listener = new RichRailCli(trains);
 
             // Walk over ParseTree using Custom Listener that listens to enter/exit events
             walker.walk(listener, tree);
+            trains = listener.getResult();
+            drawAllTrains();
+
+            Gson gson = new Gson();
         });
 
         TextField logger = new TextField();
@@ -110,24 +113,6 @@ public class Start extends Application {
 
         drawAllTrains();
 
-//        new Timer().scheduleAtFixedRate(new TimerTask(){
-//            @Override
-//            public void run(){
-//                Platform.runLater(new Runnable(){
-//                    @Override
-//                    public void run() {
-//                        trains.add(train);
-//                        trains.add(train1);
-//
-//                        main.getChildren().clear();
-//                        drawAllTrains();
-//                    }
-//                });
-//
-//            }
-//        },0,1000);
-//
-
         Gson gson = new Gson();
 
         System.out.println(gson.toJson(trains));
@@ -143,21 +128,20 @@ public class Start extends Application {
         Wagon wagon1 = new Wagon("adas");
         train1.addWagon(wagon1);
         train1.addWagon(wagon1);
-//
+
         trains.add(train);
         trains.add(train);
         trains.add(train);
         trains.add(train1);
-//
+
 //        Gson gson = new Gson();
-//
 //        System.out.println(gson.toJson(main));
 
     }
 
 
     private void drawAllTrains() {
-
+        main.getChildren().clear();
         for (int i = 0; i < trains.size(); i++) {
 
             Train train = trains.get(i);

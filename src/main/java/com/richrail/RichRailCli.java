@@ -1,12 +1,22 @@
 package com.richrail;
 
+import com.richrail.models.Locomotive;
+import com.richrail.models.Train;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import parser.RichRailListener;
 import parser.RichRailParser;
 
+import java.util.ArrayList;
+
 public class RichRailCli implements RichRailListener {
+    private final ArrayList<Train> trains;
+
+    public RichRailCli(ArrayList<Train> trains) {
+        this.trains = trains;
+    }
+
     @Override
     public void enterCommand(RichRailParser.CommandContext ctx) {
 
@@ -29,7 +39,9 @@ public class RichRailCli implements RichRailListener {
 
     @Override
     public void enterNewtraincommand(RichRailParser.NewtraincommandContext ctx) {
-
+        Train train = new Train("test");
+        train.setLocomotive(new Locomotive());
+        trains.add(train);
     }
 
     @Override
@@ -115,5 +127,9 @@ public class RichRailCli implements RichRailListener {
     @Override
     public void exitEveryRule(ParserRuleContext ctx) {
 
+    }
+
+    public ArrayList<Train> getResult() {
+        return trains;
     }
 }
