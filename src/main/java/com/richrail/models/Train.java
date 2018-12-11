@@ -12,10 +12,15 @@ public class Train {
 
     public Train(String title) {
         this.title = title;
+        this.wagons = new ArrayList<>();
     }
 
     public void addWagon(Wagon wagon) {
         this.wagons.add(wagon);
+    }
+
+    public ArrayList<Wagon> getWagons() {
+        return wagons;
     }
 
     public void draw(JPanel drawPanel, int offset) {

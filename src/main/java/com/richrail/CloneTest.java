@@ -8,10 +8,10 @@ public class CloneTest {
 
     public static void main(String[] args) {
 
-        Train trein1 = new Train("Voorbeeld");
-        Wagon wagon1 = new Wagon();
+//        Train trein1 = new Train("Voorbeeld");
+//        Wagon wagon1 = new Wagon(/);
 
-        trein1.addWagon(wagon1);
+//        trein1.addWagon(wagon1);
 
 
 
