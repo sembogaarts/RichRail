@@ -13,7 +13,7 @@ import java.util.ArrayList;
 public class RichRailCli implements RichRailListener {
     private final ArrayList<Train> trains;
 
-    public RichRailCli(ArrayList<Train> trains) {
+    RichRailCli(ArrayList<Train> trains) {
         this.trains = trains;
     }
 
@@ -40,7 +40,7 @@ public class RichRailCli implements RichRailListener {
     @Override
     public void enterNewtraincommand(RichRailParser.NewtraincommandContext ctx) {
         Train train = new Train("test");
-        train.setLocomotive(new Locomotive());
+        train.setLocomotive(new Locomotive(ctx.ID().toString()));
         trains.add(train);
     }
 

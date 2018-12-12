@@ -16,6 +16,12 @@ public class Train {
         this.wagons = new ArrayList<>();
     }
 
+    public Train(String title, ArrayList wagons) {
+        this.title = title;
+        this.wagons = wagons;
+    }
+
+
     public void addWagon(Wagon wagon) {
         this.wagons.add(wagon);
     }
@@ -38,13 +44,6 @@ public class Train {
 
         // Draw the locomotive
         Group locomotiveGroup = this.locomotive.draw(x, y);
-
-        // Add the name
-        Text name = new Text();
-        name.setText(this.title);
-        name.setX(10);
-        name.setY(y);
-        locomotiveGroup.getChildren().add(name);
 
         // Add the locomotive
         g.getChildren().add(locomotiveGroup);
