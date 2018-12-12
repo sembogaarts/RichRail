@@ -40,17 +40,13 @@ public class Start extends Application {
         root.setHgap(10);
         root.setVgap(10);
         Button execute_btn = new Button("Execute");
-
-        root.add(main, 0, 1);
+        main.prefHeight(1000);
 
         Label label1 = new Label("Command");
         TextField textField = new TextField();
         HBox hb = new HBox();
         hb.getChildren().addAll(label1, textField);
         hb.setSpacing(10);
-
-        root.add(hb, 0, 2);
-        root.add(execute_btn, 1, 2);
         execute_btn.setOnAction(e -> {
             CharStream lineStream = CharStreams.fromString(textField.getText());
 
@@ -69,19 +65,15 @@ public class Start extends Application {
             // Walk over ParseTree using Custom Listener that listens to enter/exit events
             walker.walk(listener, tree);
             trains = listener.getResult();
-            drawAllTrains();
-
-            Gson gson = new Gson();
+            repaint();
         });
 
         TextField logger = new TextField();
 
+        root.add(main, 0, 1);
+        root.add(hb, 0, 2);
+        root.add(execute_btn, 1, 2);
         root.add(logger, 0, 3);
-
-
-//        Create a new Group an Scene
-//        Group g1 = this.locomotive(0, 0);
-//        Group g2 = this.wagon(150, 0);
 
         final Scene scene = new Scene(root, 1000, 1000, Color.WHITE);
 
@@ -90,12 +82,17 @@ public class Start extends Application {
 
         primaryStage.show();
 
+
+        loadData();
+        repaint();
+    }
+
+    public void loadData() {
         trains = new ArrayList<>();
+        Train train1 = new Train();
+        Train train2 = new Train();
 
-        Train train1 = new Train("test1");
-        Train train2 = new Train("test2");
-
-        Locomotive locomotive = new Locomotive();
+        Locomotive locomotive = new Locomotive("asd");
 
         train1.setLocomotive(locomotive);
         train2.setLocomotive(locomotive);
@@ -111,45 +108,19 @@ public class Start extends Application {
         train2.addWagon(wagon2);
         trains.add(train2);
 
-        drawAllTrains();
 
         Gson gson = new Gson();
 
         System.out.println(gson.toJson(trains));
 
-//        gson.fromJson(trains, Train);
     }
 
 
-    public void antlrtest() {
-
-        Train train = new Train("test");
-        Train train1 = new Train("test");
-        Wagon wagon1 = new Wagon("adas");
-        train1.addWagon(wagon1);
-        train1.addWagon(wagon1);
-
-        trains.add(train);
-        trains.add(train);
-        trains.add(train);
-        trains.add(train1);
-
-//        Gson gson = new Gson();
-//        System.out.println(gson.toJson(main));
-
-    }
-
-
-    private void drawAllTrains() {
+    private void repaint() {
         main.getChildren().clear();
         for (int i = 0; i < trains.size(); i++) {
-
             Train train = trains.get(i);
-
-            System.out.println(train.title);
-
-            System.out.println(train.getWagons());
-
+            System.out.println(train);
             main.getChildren().add(train.draw(0, 120 * i));
 
         }

@@ -29,7 +29,6 @@ public class RichRailCli implements RichRailListener {
 
     @Override
     public void enterNewcommand(RichRailParser.NewcommandContext ctx) {
-        System.out.println(ctx.getText());
     }
 
     @Override
@@ -39,7 +38,7 @@ public class RichRailCli implements RichRailListener {
 
     @Override
     public void enterNewtraincommand(RichRailParser.NewtraincommandContext ctx) {
-        Train train = new Train("test");
+        Train train = new Train();
         train.setLocomotive(new Locomotive(ctx.ID().toString()));
         trains.add(train);
     }
@@ -81,7 +80,10 @@ public class RichRailCli implements RichRailListener {
 
     @Override
     public void enterDelcommand(RichRailParser.DelcommandContext ctx) {
-
+        for (Train train : trains) {
+            if (train.locomotive.id.equals(ctx.ID().toString()))
+                trains.remove(train);
+        }
     }
 
     @Override

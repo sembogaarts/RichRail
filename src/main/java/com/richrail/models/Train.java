@@ -1,24 +1,19 @@
 package com.richrail.models;
 
 import javafx.scene.Group;
-import javafx.scene.text.Text;
 
 import java.util.ArrayList;
 
 public class Train {
+    public Locomotive locomotive;
+    private ArrayList<Wagon> wagons = new ArrayList<>();
 
-    public String title;
-    private Locomotive locomotive;
-    private ArrayList<Wagon> wagons;
-
-    public Train(String title) {
-        this.title = title;
-        this.wagons = new ArrayList<>();
+    public Train(Locomotive locomotive, ArrayList<Wagon> wagons) {
+        this.locomotive = locomotive;
+        this.wagons = wagons;
     }
 
-    public Train(String title, ArrayList wagons) {
-        this.title = title;
-        this.wagons = wagons;
+    public Train() {
     }
 
 
