@@ -4,10 +4,12 @@ import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
-
+import javafx.scene.text.Text;
 
 
 public class Locomotive implements RollingComponent {
+
+    private String title = "wow";
 
     public Group draw(int x, int y) {
 
@@ -39,6 +41,12 @@ public class Locomotive implements RollingComponent {
 
         pipe.setFill(javafx.scene.paint.Color.GREY);
 
+        // Add the name
+        Text name = new Text();
+        name.setText(this.title);
+        name.setX(x);
+        name.setY(y + 25);
+
         // Create the wheel
         Circle frontWheel = new Circle();
         frontWheel.setRadius(wheelRadius);
@@ -58,6 +66,7 @@ public class Locomotive implements RollingComponent {
         g.getChildren().add(pipe);
         g.getChildren().add(frontWheel);
         g.getChildren().add(backWheel);
+        g.getChildren().add(namer);
 
         return g;
 

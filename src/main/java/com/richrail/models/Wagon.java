@@ -4,6 +4,7 @@ import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
 
 public class Wagon implements RollingComponent {
     private String title;
@@ -32,6 +33,12 @@ public class Wagon implements RollingComponent {
         body.setY(y - (bodyHeight - pipeHeight));
         body.setFill(javafx.scene.paint.Color.RED);
 
+        // Add the name
+        Text name = new Text();
+        name.setText(this.title);
+        name.setX(x);
+        name.setY(y + 25);
+
         // Create the wheel
         Circle frontWheel = new Circle();
         frontWheel.setRadius(wheelRadius);
@@ -50,6 +57,7 @@ public class Wagon implements RollingComponent {
         g.getChildren().add(body);
         g.getChildren().add(frontWheel);
         g.getChildren().add(backWheel);
+        g.getChildren().add(name);
 
         return g;
     }
