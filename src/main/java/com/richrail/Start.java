@@ -33,47 +33,43 @@ public class Start extends Application {
     ArrayList<Train> trains;
     Group main;
 
+//    nieuwe trein
+//    trein selecteren
+//    trein verwijdern
+//
+//    Extra wagon toevoegen
+//    extra wAGON VERWIJDERE
+
+
     @Override
     public void start(Stage primaryStage) throws Exception {
         main = new Group();
         GridPane root = new GridPane();
-        root.setHgap(10);
-        root.setVgap(10);
-        Button execute_btn = new Button("Execute");
-        main.prefHeight(1000);
+        root.setHgap(2);
+        root.setVgap(3);
 
-        Label label1 = new Label("Command");
-        TextField textField = new TextField();
-        HBox hb = new HBox();
-        hb.getChildren().addAll(label1, textField);
-        hb.setSpacing(10);
-        execute_btn.setOnAction(e -> {
-            CharStream lineStream = CharStreams.fromString(textField.getText());
 
-            // Tokenize / Lexical analysis
-            Lexer lexer = new RichRailLexer(lineStream);
-            CommonTokenStream tokens = new CommonTokenStream(lexer);
-
-            // Create Parse Tree
-            RichRailParser parser = new RichRailParser(tokens);
-            ParseTree tree = parser.command();
-
-            // Create ParseTreeWalker and Custom Listener
-            ParseTreeWalker walker = new ParseTreeWalker();
-            RichRailCli listener = new RichRailCli(trains);
-
-            // Walk over ParseTree using Custom Listener that listens to enter/exit events
-            walker.walk(listener, tree);
-            trains = listener.getResult();
-            repaint();
+        // Command input
+        Label commandLabel = new Label("Command");
+        TextField commandTextfield = new TextField();
+        Button executeBtn = new Button("Execute");
+        HBox commandHb = new HBox();
+        commandHb.getChildren().addAll(commandLabel, commandTextfield, executeBtn);
+        commandHb.setSpacing(10);
+        executeBtn.setOnAction(e -> {
+            handleExecuteAntlr(commandTextfield.getText());
         });
 
+
+        // Logger
         TextField logger = new TextField();
 
         root.add(main, 0, 1);
-        root.add(hb, 0, 2);
-        root.add(execute_btn, 1, 2);
+        root.add(commandHb, 0, 2);
+        root.add(, 1, 2);
         root.add(logger, 0, 3);
+
+
 
         final Scene scene = new Scene(root, 1000, 1000, Color.WHITE);
 
@@ -86,6 +82,28 @@ public class Start extends Application {
         loadData();
         repaint();
     }
+
+    private void handleExecuteAntlr(String command) {
+        CharStream lineStream = CharStreams.fromString(command);
+
+        // Tokenize / Lexical analysis
+        Lexer lexer = new RichRailLexer(lineStream);
+        CommonTokenStream tokens = new CommonTokenStream(lexer);
+
+        // Create Parse Tree
+        RichRailParser parser = new RichRailParser(tokens);
+        ParseTree tree = parser.command();
+
+        // Create ParseTreeWalker and Custom Listener
+        ParseTreeWalker walker = new ParseTreeWalker();
+        RichRailCli listener = new RichRailCli(trains);
+
+        // Walk over ParseTree using Custom Listener that listens to enter/exit events
+        walker.walk(listener, tree);
+        trains = listener.getResult();
+        repaint();
+    }
+
 
     public void loadData() {
         trains = new ArrayList<>();
