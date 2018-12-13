@@ -5,11 +5,12 @@ import com.richrail.models.Locomotive;
 import com.richrail.models.Train;
 import com.richrail.models.Wagon;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
@@ -23,10 +24,10 @@ import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import parser.RichRailLexer;
-import parser.RichRailListener;
 import parser.RichRailParser;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class Start extends Application {
@@ -43,6 +44,7 @@ public class Start extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        loadData();
         main = new Group();
         GridPane root = new GridPane();
         root.setHgap(2);
@@ -58,6 +60,27 @@ public class Start extends Application {
         commandHb.setSpacing(10);
         executeBtn.setOnAction(e -> handleExecuteAntlr(commandTextfield.getText()));
 
+        // Wagon
+        Label wagonLabel = new Label("Add wagon");
+        Button wagonAddBtn = new Button("Add");
+        Button wagonRemoveBtn = new Button("Remove");
+        ChoiceBox<String> trainChoice = new ChoiceBox<>(getTrainChoices());
+        HBox wagonHb = new HBox();
+
+        wagonHb.getChildren().addAll(wagonLabel, trainChoice, wagonAddBtn, wagonRemoveBtn);
+        wagonHb.setSpacing(10);
+        wagonAddBtn.setOnAction(e -> {
+            Train train = trains.get(trainChoice.getSelectionModel().getSelectedIndex());
+            train.addWagon(new Wagon("test"));
+            repaint();
+        });
+        wagonRemoveBtn.setOnAction(e -> {
+            Train train = trains.get(trainChoice.getSelectionModel().getSelectedIndex());
+            train.removeLastWagon();
+            repaint();
+        });
+
+
         // Train input
         Label trainLabel = new Label("Add train");
         TextField trainTextfield = new TextField();
@@ -70,21 +93,17 @@ public class Start extends Application {
             train.setLocomotive(new Locomotive(trainTextfield.getText()));
             trains.add(train);
             repaint();
+            trainChoice.setItems(getTrainChoices());
         });
 
-        Button addWagon = new Button("Add Wagon");
-        Button removeWagon = new Button("Remove Wagon");
 
         // Logger
         TextField logger = new TextField();
         root.add(main, 0, 1);
         root.add(trainHb, 0, 2);
-//        root.add(wagonHb, 0, 2);
-        root.add(addWagon, 1, 3);
-        root.add(removeWagon, 2, 3);
+        root.add(wagonHb, 0, 3);
         root.add(commandHb, 0, 4);
         root.add(logger, 0, 5);
-
 
 
         final Scene scene = new Scene(root, 1000, 1000, Color.WHITE);
@@ -94,9 +113,8 @@ public class Start extends Application {
 
         primaryStage.show();
 
-
-        loadData();
         repaint();
+
     }
 
     private void handleExecuteAntlr(String command) {
@@ -127,9 +145,10 @@ public class Start extends Application {
         Train train2 = new Train();
 
         Locomotive locomotive = new Locomotive("asd");
+        Locomotive locomotive1 = new Locomotive("asds");
 
         train1.setLocomotive(locomotive);
-        train2.setLocomotive(locomotive);
+        train2.setLocomotive(locomotive1);
 
         Wagon wagon1 = new Wagon("adas");
         Wagon wagon2 = new Wagon("adas");
@@ -158,5 +177,11 @@ public class Start extends Application {
 
         }
 
+    }
+
+    public ObservableList<String> getTrainChoices() {
+        List<String> list = new ArrayList<>();
+        trains.forEach(train -> list.add(train.locomotive.id));
+        return FXCollections.observableArrayList(list);
     }
 }

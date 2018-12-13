@@ -56,4 +56,7 @@ public class Train {
 
     }
 
+    public void removeLastWagon() {
+        wagons.remove(wagons.size() - 1);
+    }
 }
