@@ -1,9 +1,9 @@
 package com.richrail;
 
 import com.google.gson.Gson;
-import com.richrail.models.Locomotive;
-import com.richrail.models.Train;
-import com.richrail.models.Wagon;
+import com.richrail.domain.Locomotive;
+import com.richrail.domain.Train;
+import com.richrail.domain.Wagon;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

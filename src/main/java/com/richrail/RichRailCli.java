@@ -1,7 +1,7 @@
 package com.richrail;
 
-import com.richrail.models.Locomotive;
-import com.richrail.models.Train;
+import com.richrail.domain.Locomotive;
+import com.richrail.domain.Train;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
@@ -81,6 +81,7 @@ public class RichRailCli implements RichRailListener {
     @Override
     public void enterDelcommand(RichRailParser.DelcommandContext ctx) {
         for (Train train : trains) {
+            // Replace to map Map<id, RollingComponent>
             if (train.locomotive.id.equals(ctx.ID().toString()))
                 trains.remove(train);
         }

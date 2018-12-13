@@ -1,4 +1,4 @@
-package com.richrail.models;
+package com.richrail.domain;
 
 import javafx.scene.Group;
 
@@ -6,11 +6,11 @@ import java.util.ArrayList;
 
 public class Train {
     public Locomotive locomotive;
-    private ArrayList<Wagon> wagons = new ArrayList<>();
+    private ArrayList<RollingComponent> rollingComponents = new ArrayList<>();
 
-    public Train(Locomotive locomotive, ArrayList<Wagon> wagons) {
+    public Train(Locomotive locomotive, ArrayList<RollingComponent> wagons) {
         this.locomotive = locomotive;
-        this.wagons = wagons;
+        this.rollingComponents = rollingComponents;
     }
 
     public Train() {

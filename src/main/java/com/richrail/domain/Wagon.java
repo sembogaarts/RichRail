@@ -1,4 +1,4 @@
-package com.richrail.models;
+package com.richrail.domain;
 
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
@@ -6,12 +6,11 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 
+public class Wagon implements RollingComponent {
+    private String title;
 
-public class Locomotive implements RollingComponent {
-    public String id;
-
-    public Locomotive(String id) {
-        this.id = id;
+    public Wagon(String title) {
+        this.title = title;
     }
 
     public Group draw(int x, int y) {
@@ -27,26 +26,16 @@ public class Locomotive implements RollingComponent {
         int wheelOffset = 10;
 
         // Create the body
-        Rectangle body = new javafx.scene.shape.Rectangle();
+        javafx.scene.shape.Rectangle body = new Rectangle();
         body.setWidth(bodyWidth);
         body.setHeight(bodyHeight);
         body.setX(x);
         body.setY(y - (bodyHeight - pipeHeight));
-        body.setFill(javafx.scene.paint.Color.GREY);
-
-        // Create the pipe
-        Rectangle pipe = new Rectangle();
-        pipe.setWidth(pipeWidth);
-        pipe.setHeight(pipeHeight);
-
-        pipe.setX(x + (bodyWidth - pipeWidth));
-        pipe.setY(y);
-
-        pipe.setFill(javafx.scene.paint.Color.GREY);
+        body.setFill(javafx.scene.paint.Color.RED);
 
         // Add the name
         Text name = new Text();
-        name.setText(this.id);
+        name.setText(this.title);
         name.setX(x);
         name.setY(y + 25);
 
@@ -66,13 +55,10 @@ public class Locomotive implements RollingComponent {
 
         // Add all to group
         g.getChildren().add(body);
-        g.getChildren().add(pipe);
         g.getChildren().add(frontWheel);
         g.getChildren().add(backWheel);
         g.getChildren().add(name);
 
         return g;
-
     }
-
 }

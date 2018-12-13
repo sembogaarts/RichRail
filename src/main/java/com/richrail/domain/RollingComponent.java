@@ -1,4 +1,4 @@
-package com.richrail.models;
+package com.richrail.domain;
 
 import javafx.scene.Group;
 
