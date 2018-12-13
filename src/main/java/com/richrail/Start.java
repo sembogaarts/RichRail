@@ -30,7 +30,7 @@ import java.util.ArrayList;
 
 
 public class Start extends Application {
-    ArrayList<Train> trains;
+    ArrayList<Train> trains = new ArrayList<>();
     Group main;
 
 //    nieuwe trein
@@ -56,18 +56,34 @@ public class Start extends Application {
         HBox commandHb = new HBox();
         commandHb.getChildren().addAll(commandLabel, commandTextfield, executeBtn);
         commandHb.setSpacing(10);
-        executeBtn.setOnAction(e -> {
-            handleExecuteAntlr(commandTextfield.getText());
+        executeBtn.setOnAction(e -> handleExecuteAntlr(commandTextfield.getText()));
+
+        // Train input
+        Label trainLabel = new Label("Add train");
+        TextField trainTextfield = new TextField();
+        Button trainAddBtn = new Button("Add");
+        HBox trainHb = new HBox();
+        trainHb.getChildren().addAll(trainLabel, trainTextfield, trainAddBtn);
+        trainHb.setSpacing(10);
+        trainAddBtn.setOnAction(e -> {
+            Train train = new Train();
+            train.setLocomotive(new Locomotive(trainTextfield.getText()));
+            trains.add(train);
+            repaint();
         });
 
+        Button addWagon = new Button("Add Wagon");
+        Button removeWagon = new Button("Remove Wagon");
 
         // Logger
         TextField logger = new TextField();
-
         root.add(main, 0, 1);
-        root.add(commandHb, 0, 2);
-        root.add(, 1, 2);
-        root.add(logger, 0, 3);
+        root.add(trainHb, 0, 2);
+//        root.add(wagonHb, 0, 2);
+        root.add(addWagon, 1, 3);
+        root.add(removeWagon, 2, 3);
+        root.add(commandHb, 0, 4);
+        root.add(logger, 0, 5);
 
 
 
@@ -125,7 +141,6 @@ public class Start extends Application {
 
         train2.addWagon(wagon2);
         trains.add(train2);
-
 
         Gson gson = new Gson();
 
