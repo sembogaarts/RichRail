@@ -2,8 +2,11 @@ package com.richrail;
 
 import com.google.gson.Gson;
 import com.richrail.domain.Locomotive;
+import com.richrail.domain.RollingComponent;
 import com.richrail.domain.Train;
 import com.richrail.domain.Wagon;
+import com.richrail.factory.RollingComponentDrawableFactory;
+import com.richrail.gui.drawable.RollingComponentDrawable;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -33,6 +36,7 @@ import java.util.List;
 public class Start extends Application {
     ArrayList<Train> trains = new ArrayList<>();
     Group main;
+    RollingComponentDrawableFactory rollingComponentDrawableFactory;
 
 //    nieuwe trein
 //    trein selecteren
@@ -44,11 +48,13 @@ public class Start extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        loadData();
+        rollingComponentDrawableFactory = new RollingComponentDrawableFactory();
         main = new Group();
         GridPane root = new GridPane();
         root.setHgap(2);
         root.setVgap(3);
+
+        loadData();
 
 
         // Command input
@@ -70,13 +76,13 @@ public class Start extends Application {
         wagonHb.getChildren().addAll(wagonLabel, trainChoice, wagonAddBtn, wagonRemoveBtn);
         wagonHb.setSpacing(10);
         wagonAddBtn.setOnAction(e -> {
-            Train train = trains.get(trainChoice.getSelectionModel().getSelectedIndex());
-            train.addWagon(new Wagon("test"));
+//            Train train = trains.get(trainChoice.getSelectionModel().getSelectedIndex());
+//            train.addWagon(new Wagon("test"));
             repaint();
         });
         wagonRemoveBtn.setOnAction(e -> {
-            Train train = trains.get(trainChoice.getSelectionModel().getSelectedIndex());
-            train.removeLastWagon();
+//            Train train = trains.get(trainChoice.getSelectionModel().getSelectedIndex());
+//            train.removeLastWagon();
             repaint();
         });
 
@@ -89,9 +95,9 @@ public class Start extends Application {
         trainHb.getChildren().addAll(trainLabel, trainTextfield, trainAddBtn);
         trainHb.setSpacing(10);
         trainAddBtn.setOnAction(e -> {
-            Train train = new Train();
-            train.setLocomotive(new Locomotive(trainTextfield.getText()));
-            trains.add(train);
+//            Train train = new Train();
+//            train.setLocomotive(new Locomotive(trainTextfield.getText()));
+//            trains.add(train);
             repaint();
             trainChoice.setItems(getTrainChoices());
         });
@@ -104,7 +110,6 @@ public class Start extends Application {
         root.add(wagonHb, 0, 3);
         root.add(commandHb, 0, 4);
         root.add(logger, 0, 5);
-
 
         final Scene scene = new Scene(root, 1000, 1000, Color.WHITE);
 
@@ -142,24 +147,17 @@ public class Start extends Application {
     public void loadData() {
         trains = new ArrayList<>();
         Train train1 = new Train();
-        Train train2 = new Train();
 
         Locomotive locomotive = new Locomotive("asd");
-        Locomotive locomotive1 = new Locomotive("asds");
-
-        train1.setLocomotive(locomotive);
-        train2.setLocomotive(locomotive1);
 
         Wagon wagon1 = new Wagon("adas");
         Wagon wagon2 = new Wagon("adas");
         Wagon wagon3 = new Wagon("adas");
 
-        train1.addWagon(wagon1);
-        train1.addWagon(wagon3);
-        trains.add(train1);
-
-        train2.addWagon(wagon2);
-        trains.add(train2);
+        train1.addRollingComponent(locomotive);
+        train1.addRollingComponent(wagon1);
+        train1.addRollingComponent(wagon2);
+        train1.addRollingComponent(wagon3);
 
         Gson gson = new Gson();
 
@@ -170,18 +168,34 @@ public class Start extends Application {
 
     private void repaint() {
         main.getChildren().clear();
+
         for (int i = 0; i < trains.size(); i++) {
             Train train = trains.get(i);
-            System.out.println(train);
-            main.getChildren().add(train.draw(0, 120 * i));
 
+            // Offsets
+            int offsetX = 160;
+            int offsetY = 120 * i;
+
+            // Create a new group for the train
+            Group g = new Group();
+
+            // Draw the rollingcompontents
+            for (int j = 0; j < train.getRollingComponents().size(); j++) {
+                RollingComponent rollingComponent = train.getRollingComponents().get(j);
+                RollingComponentDrawable rollingComponentDrawable = rollingComponentDrawableFactory.getRollingComponentDrawable(rollingComponent);
+
+                Group rollingCompontentGroup = rollingComponentDrawable.draw(offsetX * (j + 1), offsetY);
+
+                main.getChildren().add(rollingCompontentGroup);
+            }
+
+            main.getChildren().add(g);
         }
-
     }
 
     public ObservableList<String> getTrainChoices() {
         List<String> list = new ArrayList<>();
-        trains.forEach(train -> list.add(train.locomotive.id));
+//        trains.forEach(train -> list.add(train.locomotive.id));
         return FXCollections.observableArrayList(list);
     }
 }

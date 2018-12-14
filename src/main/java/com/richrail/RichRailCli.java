@@ -39,7 +39,7 @@ public class RichRailCli implements RichRailListener {
     @Override
     public void enterNewtraincommand(RichRailParser.NewtraincommandContext ctx) {
         Train train = new Train();
-        train.setLocomotive(new Locomotive(ctx.ID().toString()));
+//        train.setLocomotive(new Locomotive(ctx.ID().toString()));
         trains.add(train);
     }
 
@@ -82,8 +82,8 @@ public class RichRailCli implements RichRailListener {
     public void enterDelcommand(RichRailParser.DelcommandContext ctx) {
         for (Train train : trains) {
             // Replace to map Map<id, RollingComponent>
-            if (train.locomotive.id.equals(ctx.ID().toString()))
-                trains.remove(train);
+//            if (train.locomotive.id.equals(ctx.ID().toString()))
+//                trains.remove(train);
         }
     }
 

@@ -5,58 +5,26 @@ import javafx.scene.Group;
 import java.util.ArrayList;
 
 public class Train {
-    public Locomotive locomotive;
     private ArrayList<RollingComponent> rollingComponents = new ArrayList<>();
 
-    public Train(Locomotive locomotive, ArrayList<RollingComponent> wagons) {
-        this.locomotive = locomotive;
-        this.rollingComponents = rollingComponents;
-    }
 
     public Train() {
     }
 
-
-    public void addWagon(Wagon wagon) {
-        this.wagons.add(wagon);
+    public ArrayList<RollingComponent> getRollingComponents() {
+        return rollingComponents;
     }
 
-    public void setLocomotive(Locomotive locomotive) {
-        this.locomotive = locomotive;
+    public void setRollingComponents(ArrayList<RollingComponent> rollingComponents) {
+        this.rollingComponents = rollingComponents;
     }
 
-    public ArrayList<Wagon> getWagons() {
-        return wagons;
+    public void addRollingComponent(RollingComponent rollingComponent) {
+        rollingComponents.add(rollingComponent);
     }
 
-    public Group draw(int x, int y) {
 
-        // Offsets
-        int offsetX = 160;
-
-        // Create a new group for the train
-        Group g = new Group();
-
-        // Draw the locomotive
-        Group locomotiveGroup = this.locomotive.draw(x, y);
-
-        // Add the locomotive
-        g.getChildren().add(locomotiveGroup);
-
-        // Loop trough all the wagons and add them
-        for (int j = 0; j < this.wagons.size(); j++) {
-            // Get the wagon
-            Wagon wagon = this.wagons.get(j);
-            // Draw the wagon and add it
-            Group wagonGroup = wagon.draw(offsetX * (j + 1), y);
-            g.getChildren().add(wagonGroup);
-        }
-
-        return g;
-
-    }
-
-    public void removeLastWagon() {
-        wagons.remove(wagons.size() - 1);
+    public void removeLastRollingComponent() {
+        rollingComponents.remove(rollingComponents.size() - 1);
     }
 }
