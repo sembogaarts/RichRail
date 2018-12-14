@@ -1,19 +1,19 @@
 package com.richrail;
 
-import com.google.gson.Gson;
 import com.richrail.domain.Locomotive;
 import com.richrail.domain.RollingComponent;
 import com.richrail.domain.Train;
 import com.richrail.domain.Wagon;
 import com.richrail.factory.RollingComponentDrawableFactory;
+import com.richrail.gui.TrainGUI;
+import com.richrail.gui.WagonGUI;
 import com.richrail.gui.drawable.RollingComponentDrawable;
+import com.richrail.storage.FileTrainStorage;
+import com.richrail.storage.TrainStorage;
 import javafx.application.Application;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
@@ -30,14 +30,17 @@ import parser.RichRailLexer;
 import parser.RichRailParser;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 
 public class Start extends Application {
-    ArrayList<Train> trains = new ArrayList<>();
-    Group main;
-    RollingComponentDrawableFactory rollingComponentDrawableFactory;
-
+    private ArrayList<Train> trains = new ArrayList<>();
+    private Group main;
+    private RollingComponentDrawableFactory rollingComponentDrawableFactory;
+    private TrainStorage trainStorage;
 //    nieuwe trein
 //    trein selecteren
 //    trein verwijdern
@@ -49,13 +52,15 @@ public class Start extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         rollingComponentDrawableFactory = new RollingComponentDrawableFactory();
+        trainStorage = new FileTrainStorage("trains.json");
+//        trains.addAll(trainStorage.loadTrains());
+
         main = new Group();
         GridPane root = new GridPane();
         root.setHgap(2);
         root.setVgap(3);
 
         loadData();
-
 
         // Command input
         Label commandLabel = new Label("Command");
@@ -66,48 +71,40 @@ public class Start extends Application {
         commandHb.setSpacing(10);
         executeBtn.setOnAction(e -> handleExecuteAntlr(commandTextfield.getText()));
 
+
         // Wagon
-        Label wagonLabel = new Label("Add wagon");
-        Button wagonAddBtn = new Button("Add");
-        Button wagonRemoveBtn = new Button("Remove");
-        ChoiceBox<String> trainChoice = new ChoiceBox<>(getTrainChoices());
-        HBox wagonHb = new HBox();
-
-        wagonHb.getChildren().addAll(wagonLabel, trainChoice, wagonAddBtn, wagonRemoveBtn);
-        wagonHb.setSpacing(10);
-        wagonAddBtn.setOnAction(e -> {
-//            Train train = trains.get(trainChoice.getSelectionModel().getSelectedIndex());
-//            train.addWagon(new Wagon("test"));
+        WagonGUI wagonGUI = new WagonGUI();
+        wagonGUI.setChoiceItems(getTrainChoices());
+        wagonGUI.setOnAddAction(event -> {
+            Train train = trains.get(wagonGUI.getChoiceboxIndex());
+            train.addRollingComponent(new Wagon("test"));
             repaint();
         });
-        wagonRemoveBtn.setOnAction(e -> {
-//            Train train = trains.get(trainChoice.getSelectionModel().getSelectedIndex());
-//            train.removeLastWagon();
+        wagonGUI.setOnRemoveAction(event -> {
+            Train train = trains.get(wagonGUI.getChoiceboxIndex());
+            train.removeLastRollingComponent();
             repaint();
         });
 
 
-        // Train input
-        Label trainLabel = new Label("Add train");
-        TextField trainTextfield = new TextField();
-        Button trainAddBtn = new Button("Add");
-        HBox trainHb = new HBox();
-        trainHb.getChildren().addAll(trainLabel, trainTextfield, trainAddBtn);
-        trainHb.setSpacing(10);
-        trainAddBtn.setOnAction(e -> {
-//            Train train = new Train();
-//            train.setLocomotive(new Locomotive(trainTextfield.getText()));
-//            trains.add(train);
-            repaint();
-            trainChoice.setItems(getTrainChoices());
-        });
+        TrainGUI trainGUI = new TrainGUI();
+        trainGUI.setOnAddAction(event -> {
+            Train train = new Train();
+            Locomotive locomotive = new Locomotive(trainGUI.getInputText());
+            train.addRollingComponent(locomotive);
+            trains.add(train);
 
+            repaint();
+            wagonGUI.setChoiceItems(getTrainChoices());
+        });
 
         // Logger
         TextField logger = new TextField();
+
+
         root.add(main, 0, 1);
-        root.add(trainHb, 0, 2);
-        root.add(wagonHb, 0, 3);
+        root.add(trainGUI.getTrainGUIBox(), 0, 2);
+        root.add(wagonGUI.getWagonGUIBox(), 0, 3);
         root.add(commandHb, 0, 4);
         root.add(logger, 0, 5);
 
@@ -147,6 +144,7 @@ public class Start extends Application {
     public void loadData() {
         trains = new ArrayList<>();
         Train train1 = new Train();
+        Train train2 = new Train();
 
         Locomotive locomotive = new Locomotive("asd");
 
@@ -159,25 +157,26 @@ public class Start extends Application {
         train1.addRollingComponent(wagon2);
         train1.addRollingComponent(wagon3);
 
-        Gson gson = new Gson();
+        train2.addRollingComponent(wagon1);
+        train2.addRollingComponent(locomotive);
+        train2.addRollingComponent(wagon1);
 
-        System.out.println(gson.toJson(trains));
+        trains.add(train1);
+        trains.add(train2);
 
+        trainStorage.saveTrains(trains);
     }
-
 
     private void repaint() {
         main.getChildren().clear();
 
         for (int i = 0; i < trains.size(); i++) {
             Train train = trains.get(i);
+            Group trainGroup = new Group();
 
             // Offsets
             int offsetX = 160;
             int offsetY = 120 * i;
-
-            // Create a new group for the train
-            Group g = new Group();
 
             // Draw the rollingcompontents
             for (int j = 0; j < train.getRollingComponents().size(); j++) {
@@ -186,16 +185,17 @@ public class Start extends Application {
 
                 Group rollingCompontentGroup = rollingComponentDrawable.draw(offsetX * (j + 1), offsetY);
 
-                main.getChildren().add(rollingCompontentGroup);
+                trainGroup.getChildren().add(rollingCompontentGroup);
             }
 
-            main.getChildren().add(g);
+            main.getChildren().add(trainGroup);
         }
     }
 
-    public ObservableList<String> getTrainChoices() {
-        List<String> list = new ArrayList<>();
-//        trains.forEach(train -> list.add(train.locomotive.id));
-        return FXCollections.observableArrayList(list);
+
+    /*Find a nicer way of doing this*/
+    public List<String> getTrainChoices() {
+        List<Integer> list = Arrays.stream(IntStream.range(0, trains.size()).toArray()).boxed().collect(Collectors.toList());
+        return list.stream().map(s -> String.valueOf(s + 1)).collect(Collectors.toList());
     }
 }

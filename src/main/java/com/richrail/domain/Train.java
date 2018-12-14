@@ -27,4 +27,5 @@ public class Train {
     public void removeLastRollingComponent() {
         rollingComponents.remove(rollingComponents.size() - 1);
     }
+
 }
