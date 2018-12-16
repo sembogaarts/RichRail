@@ -1,1 +1,118 @@
-[{"rollingComponents":[{"id":"asd","type":"wagon"},{"id":"adas","type":"locomotive"},{"id":"adas","type":"wagon"},{"id":"adas","type":"wagon"}]},{"rollingComponents":[{"id":"adas","type":"wagon"},{"id":"asd","type":"locomotive"},{"id":"adas","type":"wagon"}]}]
+[
+  {
+    "rollingComponents": [
+      {
+        "id": "asd",
+        "type": "wagon"
+      },
+      {
+        "id": "adas",
+        "type": "locomotive"
+      },
+      {
+        "id": "adas",
+        "type": "wagon"
+      },
+      {
+        "id": "adas",
+        "type": "wagon"
+      }
+    ]
+  },
+  {
+    "rollingComponents": [
+      {
+        "id": "asd",
+        "type": "wagon"
+      },
+      {
+        "id": "adas",
+        "type": "locomotive"
+      },
+      {
+        "id": "adas",
+        "type": "wagon"
+      },
+      {
+        "id": "adas",
+        "type": "wagon"
+      }
+    ]
+  },
+  {
+    "rollingComponents": [
+      {
+        "id": "asd",
+        "type": "wagon"
+      },
+      {
+        "id": "adas",
+        "type": "locomotive"
+      },
+      {
+        "id": "adas",
+        "type": "wagon"
+      },
+      {
+        "id": "adas",
+        "type": "wagon"
+      }
+    ]
+  },
+  {
+    "rollingComponents": [
+      {
+        "id": "asd",
+        "type": "wagon"
+      },
+      {
+        "id": "adas",
+        "type": "locomotive"
+      },
+      {
+        "id": "adas",
+        "type": "wagon"
+      },
+      {
+        "id": "adas",
+        "type": "wagon"
+      }
+    ]
+  },
+  {
+    "rollingComponents": [
+      {
+        "id": "asd",
+        "type": "wagon"
+      },
+      {
+        "id": "adas",
+        "type": "locomotive"
+      },
+      {
+        "id": "adas",
+        "type": "wagon"
+      },
+      {
+        "id": "adas",
+        "type": "wagon"
+      }
+    ]
+  },
+  {
+    "rollingComponents": [
+      {
+        "id": "adas",
+        "type": "wagon"
+      },
+      {
+        "id": "asd",
+        "type": "locomotive"
+      },
+      {
+        "id": "adas",
+        "type": "wagon"
+      }
+    ]
+  }
+]
