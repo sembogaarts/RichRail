@@ -14,8 +14,17 @@ public class Locomotive implements RollingComponent {
         this.id = id;
     }
 
+    public Locomotive() {
+
+    }
+
     @Override
     public String getId() {
         return id;
+    }
+
+    @Override
+    public void setId(String id) {
+        this.id = id;
     }
 }

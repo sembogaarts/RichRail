@@ -13,8 +13,18 @@ public class Wagon implements RollingComponent {
         this.id = id;
     }
 
+    public Wagon() {
+
+    }
+
     @Override
     public String getId() {
         return id;
     }
+
+    @Override
+    public void setId(String id) {
+        this.id = id;
+    }
+
 }

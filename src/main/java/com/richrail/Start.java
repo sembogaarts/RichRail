@@ -53,14 +53,12 @@ public class Start extends Application {
     public void start(Stage primaryStage) throws Exception {
         rollingComponentDrawableFactory = new RollingComponentDrawableFactory();
         trainStorage = new FileTrainStorage("trains.json");
-//        trains.addAll(trainStorage.loadTrains());
+        trains.addAll(trainStorage.loadTrains());
 
         main = new Group();
         GridPane root = new GridPane();
         root.setHgap(2);
         root.setVgap(3);
-
-        loadData();
 
         // Command input
         Label commandLabel = new Label("Command");

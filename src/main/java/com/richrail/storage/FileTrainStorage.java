@@ -1,8 +1,11 @@
 package com.richrail.storage;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import com.richrail.domain.RollingComponent;
 import com.richrail.domain.Train;
+import com.richrail.serializer.RollingComponentSerializer;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -16,7 +19,9 @@ public class FileTrainStorage implements TrainStorage {
     Gson gson;
 
     public FileTrainStorage(String fileLocation) {
-        this.gson = new Gson();
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.registerTypeAdapter(RollingComponent.class, new RollingComponentSerializer());
+        this.gson = gsonBuilder.create();
         this.fileLocation = fileLocation;
     }
 
