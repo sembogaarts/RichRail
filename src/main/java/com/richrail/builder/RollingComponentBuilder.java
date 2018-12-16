@@ -15,19 +15,28 @@ public class RollingComponentBuilder {
     public RollingComponentBuilder setType(RollingComponentType rollingComponentType) {
         if (rollingComponentType.equals(RollingComponentType.LOCOMOTIVE)) {
             newRollingComponent = new Locomotive();
-        }
-        if (rollingComponentType.equals(RollingComponentType.WAGON)) {
+        } else if (rollingComponentType.equals(RollingComponentType.WAGON)) {
             newRollingComponent = new Wagon();
         }
+
         return this;
     }
 
     public RollingComponentBuilder setId(String id) {
         newRollingComponent.setId(id);
+
+        return this;
+    }
+
+
+    public RollingComponentBuilder setSeats(int seats) {
+        newRollingComponent.setSeats(seats);
+
         return this;
     }
 
     public RollingComponent build() {
         return newRollingComponent;
     }
+
 }

@@ -9,13 +9,18 @@ import javafx.scene.text.Text;
 
 public class Locomotive implements RollingComponent {
     public String id;
+    private int seats = 20;
+
+    public Locomotive() {
+    }
 
     public Locomotive(String id) {
         this.id = id;
     }
 
-    public Locomotive() {
-
+    public Locomotive(String id, int seats) {
+        this.id = id;
+        this.seats = seats;
     }
 
     @Override
@@ -26,5 +31,15 @@ public class Locomotive implements RollingComponent {
     @Override
     public void setId(String id) {
         this.id = id;
+    }
+
+    @Override
+    public int getSeats() {
+        return seats;
+    }
+
+    @Override
+    public void setSeats(int seats) {
+        this.seats = seats;
     }
 }

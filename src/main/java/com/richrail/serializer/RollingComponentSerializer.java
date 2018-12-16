@@ -13,8 +13,8 @@ public class RollingComponentSerializer implements JsonSerializer<RollingCompone
     public JsonElement serialize(RollingComponent src, Type typeOfSrc, JsonSerializationContext context) {
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("id", src.getId());
-
         jsonObject.addProperty("type", RollingComponentType.getTypeByInstance(src).getType());
+        jsonObject.addProperty("seats", src.getSeats());
 
         return jsonObject;
 
@@ -25,10 +25,12 @@ public class RollingComponentSerializer implements JsonSerializer<RollingCompone
         JsonObject jsonObject = json.getAsJsonObject();
         String rollingComponentType = jsonObject.get("type").getAsString();
         String rollingComponentId = jsonObject.get("id").getAsString();
+        int rollingComponentSeats = jsonObject.get("seats").getAsInt();
 
         return new RollingComponentBuilder()
                 .setType(RollingComponentType.getTypeByText(rollingComponentType))
                 .setId(rollingComponentId)
+                .setSeats(rollingComponentSeats)
                 .build();
     }
 }

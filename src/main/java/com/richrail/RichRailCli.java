@@ -1,7 +1,7 @@
 package com.richrail;
 
-import com.richrail.domain.Locomotive;
-import com.richrail.domain.Train;
+import com.richrail.builder.RollingComponentBuilder;
+import com.richrail.domain.*;
 import com.richrail.observer.RichRail;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ErrorNode;
@@ -12,7 +12,19 @@ import parser.RichRailParser;
 import java.util.ArrayList;
 
 public class RichRailCli implements RichRailListener {
-    RichRail richRail;
+
+    /*
+        new train tr1; // response is “train tr1 created”
+        new wagon wg1; // response is “wagon wg1 created with 20 seats”
+        new wagon wg2 numseats 15; // response is “wagon wg2 created with 15 seats”
+        add wg1 to tr1; // response: “wagon wg1 added to train tr1”
+        getnumseats train tr1; // response: “number of seats in train tr1: 20”
+        getnumseats wagon wg2; // response: “number of seats in wagon wg2: 15”
+        delete train tr1; // response: “train tr1 deleted”
+        delete train tr2; // response: “train tr2 does not exist”
+        remove wg1 from tr1; // response: “wagon wg1 removed from train tr1”
+    */
+    private RichRail richRail;
 
     RichRailCli(RichRail richRail) {
         this.richRail = richRail;
@@ -40,8 +52,15 @@ public class RichRailCli implements RichRailListener {
 
     @Override
     public void enterNewtraincommand(RichRailParser.NewtraincommandContext ctx) {
+        String wagonName = ctx.ID().getText();
+
+        RollingComponent rollingComponent = new RollingComponentBuilder()
+                .setType(RollingComponentType.LOCOMOTIVE)
+                .setId(wagonName)
+                .build();
+
         Train train = new Train();
-//        train.setLocomotive(new Locomotive(ctx.ID().toString()));
+        train.addRollingComponent(rollingComponent);
         richRail.addTrain(train);
     }
 
@@ -52,7 +71,21 @@ public class RichRailCli implements RichRailListener {
 
     @Override
     public void enterNewwagoncommand(RichRailParser.NewwagoncommandContext ctx) {
+        String wagonName = ctx.ID().getText();
 
+        RollingComponentBuilder rollingComponentBuilder = new RollingComponentBuilder()
+                .setType(RollingComponentType.WAGON)
+                .setId(wagonName);
+
+        if (ctx.NUMBER() != null) {
+            rollingComponentBuilder.setSeats(Integer.parseInt(ctx.NUMBER().getText()));
+        }
+
+        RollingComponent rollingComponent = rollingComponentBuilder.build();
+        Train train = new Train();
+        train.addRollingComponent(rollingComponent);
+
+        richRail.addTrain(train);
     }
 
     @Override
@@ -82,11 +115,8 @@ public class RichRailCli implements RichRailListener {
 
     @Override
     public void enterDelcommand(RichRailParser.DelcommandContext ctx) {
-//        for (Train train : trains) {
-            // Replace to map Map<id, RollingComponent>
-//            if (train.locomotive.id.equals(ctx.ID().toString()))
-//                trains.remove(train);
-//        }
+        // Replace to map Map<id, RollingComponent>
+        richRail.removeTrainById(ctx.ID().getText());
     }
 
     @Override

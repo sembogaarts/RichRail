@@ -28,4 +28,15 @@ public class Train {
         rollingComponents.remove(rollingComponents.size() - 1);
     }
 
+    public void removeRollingComponent(RollingComponent rollingComponent) {
+        rollingComponents.remove(rollingComponent);
+    }
+
+    public void removeRollingComponentById(String id) {
+        for (RollingComponent rollingComponent : rollingComponents) {
+            if (rollingComponent.getId().equals(id)) {
+                removeRollingComponent(rollingComponent);
+            }
+        }
+    }
 }

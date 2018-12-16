@@ -27,8 +27,17 @@ public class RichRail {
         this.listeners.forEach(listener -> listener.onChanged(this));
     }
 
-    public void addTrain(Train train) {
-        this.trains.add(train);
+    public void addTrain(Train newTrain) {
+        for (Train train : trains) {
+            for (RollingComponent rollingComponent : train.getRollingComponents()) {
+                for (RollingComponent newRollingComponent : newTrain.getRollingComponents()) {
+                    if (newRollingComponent.getId().equals(rollingComponent.getId())) {
+                        return;
+                    }
+                }
+            }
+        }
+        this.trains.add(newTrain);
         this.notifyTrainListeners();
     }
 
@@ -60,6 +69,19 @@ public class RichRail {
         train.removeLastRollingComponent();
         if (train.getRollingComponents().isEmpty()) {
             removeTrain(index);
+        }
+        this.notifyTrainListeners();
+    }
+
+    public void removeTrainById(String id) {
+        for (int i = 0; i < trains.size(); i++) {
+            Train train = trains.get(i);
+            train.removeRollingComponentById(id);
+
+
+            if (train.getRollingComponents().isEmpty()) {
+                removeTrain(i);
+            }
         }
         this.notifyTrainListeners();
     }
