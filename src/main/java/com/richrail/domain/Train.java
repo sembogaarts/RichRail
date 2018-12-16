@@ -1,12 +1,9 @@
 package com.richrail.domain;
 
-import javafx.scene.Group;
-
 import java.util.ArrayList;
 
 public class Train {
     private ArrayList<RollingComponent> rollingComponents = new ArrayList<>();
-
 
     public Train() {
     }
@@ -23,6 +20,14 @@ public class Train {
         rollingComponents.add(rollingComponent);
     }
 
+    public RollingComponent findRollingComponentById(String id) {
+        for (RollingComponent rollingComponent : rollingComponents) {
+            if (rollingComponent.getId().equals(id)) {
+                return rollingComponent;
+            }
+        }
+        return null;
+    }
 
     public void removeLastRollingComponent() {
         rollingComponents.remove(rollingComponents.size() - 1);

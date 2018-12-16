@@ -4,10 +4,13 @@ import com.richrail.domain.Locomotive;
 import com.richrail.domain.Train;
 import com.richrail.domain.Wagon;
 import com.richrail.factory.RollingComponentDrawableFactory;
+import com.richrail.gui.CommandGUI;
+import com.richrail.gui.LoggerGUI;
 import com.richrail.gui.TrainGUI;
 import com.richrail.gui.WagonGUI;
 import com.richrail.observer.GUITrainListener;
 import com.richrail.observer.RichRail;
+import com.richrail.observer.RichRailLogger;
 import com.richrail.observer.StorageTrainListener;
 import com.richrail.storage.FileTrainStorage;
 import com.richrail.storage.TrainStorage;
@@ -42,6 +45,15 @@ public class Start extends Application {
     private TrainStorage trainStorage;
     private RichRail richRail;
 
+    // Wagon
+    /* GUI*/
+    private WagonGUI wagonGUI = new WagonGUI();
+    private TrainGUI trainGUI = new TrainGUI();
+
+    // Command input
+    private CommandGUI commandGUI = new CommandGUI();
+    private LoggerGUI loggerGUI = new LoggerGUI();
+
 //    nieuwe trein
 //    trein selecteren
 //    trein verwijdern
@@ -53,7 +65,7 @@ public class Start extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         trainStorage = new FileTrainStorage("trains.json");
-        richRail = new RichRail();
+        richRail = new RichRailLogger(loggerGUI);
         richRail.registerTrainListener(new GUITrainListener(rollingComponentDrawableFactory, main));
         richRail.registerTrainListener(new StorageTrainListener(trainStorage));
         richRail.addAllTrains(trainStorage.loadTrains());
@@ -62,17 +74,8 @@ public class Start extends Application {
         root.setHgap(2);
         root.setVgap(3);
 
-        // Command input
-        Label commandLabel = new Label("Command");
-        TextField commandTextfield = new TextField();
-        Button executeBtn = new Button("Execute");
-        HBox commandHb = new HBox();
-        commandHb.getChildren().addAll(commandLabel, commandTextfield, executeBtn);
-        commandHb.setSpacing(10);
-        executeBtn.setOnAction(e -> handleExecuteAntlr(commandTextfield.getText()));
+        commandGUI.setOnExecuteAction(event -> handleExecuteAntlr(commandGUI.getInputText()));
 
-        // Wagon
-        WagonGUI wagonGUI = new WagonGUI();
         wagonGUI.setChoiceItems(getTrainChoices());
         wagonGUI.setOnAddAction(event -> richRail.addRollingComponentToTrain(wagonGUI.getChoiceboxIndex(), new Wagon()));
         wagonGUI.setOnRemoveAction(event -> {
@@ -81,7 +84,6 @@ public class Start extends Application {
         });
 
 
-        TrainGUI trainGUI = new TrainGUI();
         trainGUI.setOnAddAction(event -> {
             Train train = new Train();
             Locomotive locomotive = new Locomotive(trainGUI.getInputText());
@@ -92,14 +94,12 @@ public class Start extends Application {
         });
 
         // Logger
-        TextField logger = new TextField();
-
 
         root.add(main, 0, 1);
         root.add(trainGUI.getTrainGUIBox(), 0, 2);
         root.add(wagonGUI.getWagonGUIBox(), 0, 3);
-        root.add(commandHb, 0, 4);
-        root.add(logger, 0, 5);
+        root.add(commandGUI.getCommandGUIBox(), 0, 4);
+        root.add(loggerGUI.getLoggerGUIBox(), 0, 5);
 
         final Scene scene = new Scene(root, 1000, 1000, Color.WHITE);
 

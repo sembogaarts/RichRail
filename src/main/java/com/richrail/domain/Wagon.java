@@ -17,7 +17,6 @@ public class Wagon implements RollingComponent {
         this.seats = seats;
     }
 
-
     @Override
     public String getId() {
         return id;

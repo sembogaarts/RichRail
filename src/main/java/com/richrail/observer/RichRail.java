@@ -85,4 +85,46 @@ public class RichRail {
         }
         this.notifyTrainListeners();
     }
+
+    public void moveRollingComponent(String from, String to) {
+        RollingComponent rollingComponentFrom = null;
+        Train trainTo = null;
+        for (Train train : trains) {
+            for (RollingComponent rollingComponent : train.getRollingComponents()) {
+                if (rollingComponent.getId().equals(from)) {
+                    rollingComponentFrom = rollingComponent;
+                }
+                if (rollingComponent.getId().equals(to)) {
+                    trainTo = train;
+                }
+            }
+            if (trainTo != null) {
+                trainTo.addRollingComponent(rollingComponentFrom);
+                removeTrainById(from);
+            }
+        }
+        this.notifyTrainListeners();
+    }
+
+    public void removeRollingComponentFromTrain(String id) {
+        for (Train train : trains) {
+            train.removeRollingComponentById(id);
+        }
+    }
+
+    public RollingComponent findRollingComponentById(String name) {
+        for (Train train : trains) {
+            return train.findRollingComponentById(name);
+        }
+        return null;
+    }
+
+    public int getSeatsById(String id) {
+        RollingComponent rollingComponent = findRollingComponentById(id);
+        if (rollingComponent != null) {
+            return rollingComponent.getSeats();
+        }
+
+        return 0;
+    }
 }

@@ -95,6 +95,9 @@ public class RichRailCli implements RichRailListener {
 
     @Override
     public void enterAddcommand(RichRailParser.AddcommandContext ctx) {
+        String from = ctx.ID(0).getText();
+        String to = ctx.ID(1).getText();
+        richRail.moveRollingComponent(from, to);
 
     }
 
@@ -105,7 +108,9 @@ public class RichRailCli implements RichRailListener {
 
     @Override
     public void enterGetcommand(RichRailParser.GetcommandContext ctx) {
-
+        String name = ctx.ID().toString();
+        System.out.println(name);
+        richRail.getSeatsById(name);
     }
 
     @Override
@@ -126,7 +131,7 @@ public class RichRailCli implements RichRailListener {
 
     @Override
     public void enterRemcommand(RichRailParser.RemcommandContext ctx) {
-
+        richRail.removeRollingComponentFromTrain(ctx.ID(0).toString());
     }
 
     @Override

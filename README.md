@@ -1,7 +1,11 @@
 # RichRail
 
+## Domain model
+![](domain-model.jpeg)
 
 ## Design patterns
 - [x] Factory 
-- [ ] Iterator (count seats)
-- [ ] Builder (Train builder)
+- [x] Builder (Train builder)
+- [x] Observer
+- [x] Decorator
+
