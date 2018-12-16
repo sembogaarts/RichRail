@@ -1,13 +1,14 @@
 package com.richrail;
 
 import com.richrail.domain.Locomotive;
-import com.richrail.domain.RollingComponent;
 import com.richrail.domain.Train;
 import com.richrail.domain.Wagon;
 import com.richrail.factory.RollingComponentDrawableFactory;
 import com.richrail.gui.TrainGUI;
 import com.richrail.gui.WagonGUI;
-import com.richrail.gui.drawable.RollingComponentDrawable;
+import com.richrail.observer.GUITrainListener;
+import com.richrail.observer.RichRail;
+import com.richrail.observer.StorageTrainListener;
 import com.richrail.storage.FileTrainStorage;
 import com.richrail.storage.TrainStorage;
 import javafx.application.Application;
@@ -29,7 +30,6 @@ import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import parser.RichRailLexer;
 import parser.RichRailParser;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -37,10 +37,11 @@ import java.util.stream.IntStream;
 
 
 public class Start extends Application {
-    private ArrayList<Train> trains = new ArrayList<>();
-    private Group main;
-    private RollingComponentDrawableFactory rollingComponentDrawableFactory;
+    private Group main = new Group();
+    private RollingComponentDrawableFactory rollingComponentDrawableFactory = new RollingComponentDrawableFactory();
     private TrainStorage trainStorage;
+    private RichRail richRail;
+
 //    nieuwe trein
 //    trein selecteren
 //    trein verwijdern
@@ -51,11 +52,12 @@ public class Start extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        rollingComponentDrawableFactory = new RollingComponentDrawableFactory();
         trainStorage = new FileTrainStorage("trains.json");
-        trains.addAll(trainStorage.loadTrains());
+        richRail = new RichRail();
+        richRail.registerTrainListener(new GUITrainListener(rollingComponentDrawableFactory, main));
+        richRail.registerTrainListener(new StorageTrainListener(trainStorage));
+        richRail.addAllTrains(trainStorage.loadTrains());
 
-        main = new Group();
         GridPane root = new GridPane();
         root.setHgap(2);
         root.setVgap(3);
@@ -69,19 +71,13 @@ public class Start extends Application {
         commandHb.setSpacing(10);
         executeBtn.setOnAction(e -> handleExecuteAntlr(commandTextfield.getText()));
 
-
         // Wagon
         WagonGUI wagonGUI = new WagonGUI();
         wagonGUI.setChoiceItems(getTrainChoices());
-        wagonGUI.setOnAddAction(event -> {
-            Train train = trains.get(wagonGUI.getChoiceboxIndex());
-            train.addRollingComponent(new Wagon("test"));
-            repaint();
-        });
+        wagonGUI.setOnAddAction(event -> richRail.addRollingComponentToTrain(wagonGUI.getChoiceboxIndex(), new Wagon()));
         wagonGUI.setOnRemoveAction(event -> {
-            Train train = trains.get(wagonGUI.getChoiceboxIndex());
-            train.removeLastRollingComponent();
-            repaint();
+            richRail.removeLastRollingComponentOrTrain(wagonGUI.getChoiceboxIndex());
+            wagonGUI.setChoiceItems(getTrainChoices());
         });
 
 
@@ -90,9 +86,8 @@ public class Start extends Application {
             Train train = new Train();
             Locomotive locomotive = new Locomotive(trainGUI.getInputText());
             train.addRollingComponent(locomotive);
-            trains.add(train);
+            richRail.addTrain(train);
 
-            repaint();
             wagonGUI.setChoiceItems(getTrainChoices());
         });
 
@@ -112,9 +107,6 @@ public class Start extends Application {
         primaryStage.setScene(scene);
 
         primaryStage.show();
-
-        repaint();
-
     }
 
     private void handleExecuteAntlr(String command) {
@@ -130,70 +122,16 @@ public class Start extends Application {
 
         // Create ParseTreeWalker and Custom Listener
         ParseTreeWalker walker = new ParseTreeWalker();
-        RichRailCli listener = new RichRailCli(trains);
+        RichRailCli listener = new RichRailCli(richRail);
 
         // Walk over ParseTree using Custom Listener that listens to enter/exit events
         walker.walk(listener, tree);
-        trains = listener.getResult();
-        repaint();
-    }
-
-
-    public void loadData() {
-        trains = new ArrayList<>();
-        Train train1 = new Train();
-        Train train2 = new Train();
-
-        Locomotive locomotive = new Locomotive("asd");
-
-        Wagon wagon1 = new Wagon("adas");
-        Wagon wagon2 = new Wagon("adas");
-        Wagon wagon3 = new Wagon("adas");
-
-        train1.addRollingComponent(locomotive);
-        train1.addRollingComponent(wagon1);
-        train1.addRollingComponent(wagon2);
-        train1.addRollingComponent(wagon3);
-
-        train2.addRollingComponent(wagon1);
-        train2.addRollingComponent(locomotive);
-        train2.addRollingComponent(wagon1);
-
-        trains.add(train1);
-        trains.add(train2);
-
-        trainStorage.saveTrains(trains);
-    }
-
-    private void repaint() {
-        main.getChildren().clear();
-
-        for (int i = 0; i < trains.size(); i++) {
-            Train train = trains.get(i);
-            Group trainGroup = new Group();
-
-            // Offsets
-            int offsetX = 160;
-            int offsetY = 120 * i;
-
-            // Draw the rollingcompontents
-            for (int j = 0; j < train.getRollingComponents().size(); j++) {
-                RollingComponent rollingComponent = train.getRollingComponents().get(j);
-                RollingComponentDrawable rollingComponentDrawable = rollingComponentDrawableFactory.getRollingComponentDrawable(rollingComponent);
-
-                Group rollingCompontentGroup = rollingComponentDrawable.draw(offsetX * (j + 1), offsetY);
-
-                trainGroup.getChildren().add(rollingCompontentGroup);
-            }
-
-            main.getChildren().add(trainGroup);
-        }
     }
 
 
     /*Find a nicer way of doing this*/
     public List<String> getTrainChoices() {
-        List<Integer> list = Arrays.stream(IntStream.range(0, trains.size()).toArray()).boxed().collect(Collectors.toList());
+        List<Integer> list = Arrays.stream(IntStream.range(0, richRail.getTrains().size()).toArray()).boxed().collect(Collectors.toList());
         return list.stream().map(s -> String.valueOf(s + 1)).collect(Collectors.toList());
     }
 }

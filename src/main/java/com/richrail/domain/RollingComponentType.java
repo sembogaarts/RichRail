@@ -1,9 +1,4 @@
-package com.richrail;
-
-import com.richrail.domain.Locomotive;
-import com.richrail.domain.RollingComponent;
-import com.richrail.domain.Train;
-import com.richrail.domain.Wagon;
+package com.richrail.domain;
 
 import java.io.Serializable;
 

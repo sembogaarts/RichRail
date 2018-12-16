@@ -1,6 +1,6 @@
 package com.richrail.builder;
 
-import com.richrail.RollingComponentType;
+import com.richrail.domain.RollingComponentType;
 import com.richrail.domain.Locomotive;
 import com.richrail.domain.RollingComponent;
 import com.richrail.domain.Wagon;

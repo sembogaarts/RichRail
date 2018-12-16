@@ -1,7 +1,7 @@
 package com.richrail.serializer;
 
 import com.google.gson.*;
-import com.richrail.RollingComponentType;
+import com.richrail.domain.RollingComponentType;
 import com.richrail.builder.RollingComponentBuilder;
 import com.richrail.domain.RollingComponent;
 

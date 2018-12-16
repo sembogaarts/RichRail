@@ -2,6 +2,7 @@ package com.richrail;
 
 import com.richrail.domain.Locomotive;
 import com.richrail.domain.Train;
+import com.richrail.observer.RichRail;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
@@ -11,10 +12,10 @@ import parser.RichRailParser;
 import java.util.ArrayList;
 
 public class RichRailCli implements RichRailListener {
-    private final ArrayList<Train> trains;
+    RichRail richRail;
 
-    RichRailCli(ArrayList<Train> trains) {
-        this.trains = trains;
+    RichRailCli(RichRail richRail) {
+        this.richRail = richRail;
     }
 
     @Override
@@ -29,6 +30,7 @@ public class RichRailCli implements RichRailListener {
 
     @Override
     public void enterNewcommand(RichRailParser.NewcommandContext ctx) {
+
     }
 
     @Override
@@ -40,7 +42,7 @@ public class RichRailCli implements RichRailListener {
     public void enterNewtraincommand(RichRailParser.NewtraincommandContext ctx) {
         Train train = new Train();
 //        train.setLocomotive(new Locomotive(ctx.ID().toString()));
-        trains.add(train);
+        richRail.addTrain(train);
     }
 
     @Override
@@ -80,11 +82,11 @@ public class RichRailCli implements RichRailListener {
 
     @Override
     public void enterDelcommand(RichRailParser.DelcommandContext ctx) {
-        for (Train train : trains) {
+//        for (Train train : trains) {
             // Replace to map Map<id, RollingComponent>
 //            if (train.locomotive.id.equals(ctx.ID().toString()))
 //                trains.remove(train);
-        }
+//        }
     }
 
     @Override
@@ -130,9 +132,5 @@ public class RichRailCli implements RichRailListener {
     @Override
     public void exitEveryRule(ParserRuleContext ctx) {
 
-    }
-
-    public ArrayList<Train> getResult() {
-        return trains;
     }
 }

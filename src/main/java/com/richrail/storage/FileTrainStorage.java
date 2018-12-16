@@ -37,7 +37,7 @@ public class FileTrainStorage implements TrainStorage {
 
     private void writeJsonFile(String json) {
         try {
-            Files.write(Paths.get(fileLocation), json.getBytes(), StandardOpenOption.CREATE);
+            Files.write(Paths.get(fileLocation), json.getBytes());
         } catch (IOException e) {
             e.printStackTrace();
         }

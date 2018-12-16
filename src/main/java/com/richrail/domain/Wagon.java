@@ -1,13 +1,7 @@
 package com.richrail.domain;
 
-import javafx.scene.Group;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Text;
-
 public class Wagon implements RollingComponent {
-    private String id;
+    private String id = "wagon";
 
     public Wagon(String id) {
         this.id = id;
