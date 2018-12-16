@@ -113,10 +113,13 @@ public class RichRail {
     }
 
     public RollingComponent findRollingComponentById(String name) {
+        RollingComponent rollingComponent = null;
         for (Train train : trains) {
-            return train.findRollingComponentById(name);
+            if (train.findRollingComponentById(name) != null) {
+                rollingComponent = train.findRollingComponentById(name);
+            }
         }
-        return null;
+        return rollingComponent;
     }
 
     public int getSeatsById(String id) {

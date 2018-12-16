@@ -109,7 +109,6 @@ public class RichRailCli implements RichRailListener {
     @Override
     public void enterGetcommand(RichRailParser.GetcommandContext ctx) {
         String name = ctx.ID().toString();
-        System.out.println(name);
         richRail.getSeatsById(name);
     }
 
